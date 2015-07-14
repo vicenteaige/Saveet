@@ -29,9 +29,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('login', function() {
             //
         });
-        Route::post('login', function() {
-            //
-        });
+        Route::post('login', 'UserController@apiLogUser');
         Route::post('register', function() {
            //
         });
