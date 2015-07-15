@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
+use Validator;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
 
 class UserController extends Controller
 {
@@ -81,5 +82,63 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function apiLogUser(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email'      => 'required|email',
+            'password'   => 'required|string'
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                [
+                    'header' => [
+                        'success' => 'no',
+                        'msg' => 'Invalid email or password format'
+                    ]
+                ]
+            ]);
+        }
+
+        $email = $request->email;
+        $password = $request->password;
+
+        if (Auth::attempt(['email' => $email, 'password' => $password])) {
+            $outcome = 'yes';
+            $error = '';
+        }
+        else {
+            $outcome = 'no';
+            $error = 'Wrong email and password combination';
+        }
+        return response()->json([
+                [
+                    'header' => [
+                        'success' => $outcome,
+                        'msg' => $error
+                    ]
+                ]
+        ]);
+    }
+
+    public function apiLogOutUser()
+    {
+        if (Auth::logout()) {
+            $outcome = 'yes';
+            $error = '';
+        }
+        else {
+            $outcome = 'no';
+            $error = 'No user to logout';
+        }
+        return response()->json([
+            [
+                'header' => [
+                    'success' => $outcome,
+                    'msg' => $error
+                ]
+            ]
+        ]);
     }
 }
