@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use Log;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -85,6 +86,8 @@ class UserController extends Controller
 
     public function apiLogUser(Request $request)
     {
+        $logItem = 'loginReqAPI: '.$request->email.' '.$request->password;
+        Log::debug($logItem);
         $email = $request->email;
         $password = $request->password;
         if (Auth::attempt(['email' => $email, 'password' => $password])) {
@@ -97,11 +100,14 @@ class UserController extends Controller
         }
         return response()->json(
             [
-                'header' => [
-                    'success' => $outcome,
-                    'msg' => $error
+                [
+                    'header' => [
+                        'success' => $outcome,
+                        'msg' => $error
+                    ]
                 ]
             ]
+
         );
     }
 }
