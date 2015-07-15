@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-class Item extends Controller
+class item extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -22,11 +22,13 @@ class Item extends Controller
                     'title'=> 'Azul',
                     'desc'=> 'Descripción',
                     'tipo'=> 1
-                ],[
+                ],
+                [
                     'title'=> 'Verde',
                     'desc'=> 'Descripción',
                     'tipo'=> 2
-                ],[
+                ],
+                [
                     'title'=> 'Amarillo',
                     'desc'=> 'Hola',
                     'tipo'=> 1
@@ -34,6 +36,7 @@ class Item extends Controller
             ]
         );
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -48,10 +51,9 @@ class Item extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store()
     {
         //
     }
@@ -81,11 +83,10 @@ class Item extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request  $request
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update($id)
     {
         //
     }

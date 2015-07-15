@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
 
 class UserController extends Controller
 {
@@ -81,5 +81,27 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function apiLogUser(Request $request)
+    {
+        $email = $request->email;
+        $password = $request->password;
+        if (Auth::attempt(['email' => $email, 'password' => $password])) {
+            $outcome = 'yes';
+            $error = '';
+        }
+        else {
+            $outcome = 'no';
+            $error = 'La combinacion de usuario y contrasena no es correcta.';
+        }
+        return response()->json(
+            [
+                'header' => [
+                    'success' => $outcome,
+                    'msg' => $error
+                ]
+            ]
+        );
     }
 }
