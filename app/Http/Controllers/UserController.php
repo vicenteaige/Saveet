@@ -95,7 +95,7 @@ class UserController extends Controller
                 [
                     'header' => [
                         'success' => 'no',
-                        'msg' => 'El formato del email o la contrasena no es correcto'
+                        'msg' => 'Invalid email or password format'
                     ]
                 ]
             ]);
@@ -110,7 +110,7 @@ class UserController extends Controller
         }
         else {
             $outcome = 'no';
-            $error = 'La combinacion de email y contrasena no es correcta.';
+            $error = 'Wrong email and password combination';
         }
         return response()->json([
                 [
@@ -119,6 +119,26 @@ class UserController extends Controller
                         'msg' => $error
                     ]
                 ]
+        ]);
+    }
+
+    public function apiLogOutUser()
+    {
+        if (Auth::logout()) {
+            $outcome = 'yes';
+            $error = '';
+        }
+        else {
+            $outcome = 'no';
+            $error = 'No user to logout';
+        }
+        return response()->json([
+            [
+                'header' => [
+                    'success' => $outcome,
+                    'msg' => $error
+                ]
+            ]
         ]);
     }
 }
