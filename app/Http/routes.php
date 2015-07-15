@@ -11,12 +11,20 @@
 |
 */
 
+Route::resource('item','Item');
+
+Route::resource('v1/tag','TagController');
+
+ Route::get('tags', function () {
+     return view('tags');
+ });
+
 //////////
 // Home //
 //////////
-Route::get('/', function () {
-    return view('welcome');
-});
+ Route::get('/', function () {
+     return view('welcome');
+ });
 
 //////////////////
 // v1 API calls //
