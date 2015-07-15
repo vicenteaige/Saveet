@@ -1,5 +1,4 @@
 <?php
-
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -14,9 +13,35 @@
 //////////
 // Home //
 //////////
+
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
 });
+
+//Register
+Route::get('register', function(){
+    return view('auth/register');
+});
+
+//Login
+Route::get('login', function(){
+    return view('auth/login');
+});
+
+Route::group(['middleware' => 'auth'], function() {
+    Route::get('home', function(){
+        return view('index');
+    });
+});
+
+// Authentication routes...
+Route::get('auth/login', 'Auth\AuthController@getLogin');
+Route::post('auth/login', 'Auth\AuthController@postLogin');
+Route::get('auth/logout', 'Auth\AuthController@getLogout');
+
+// Registration routes...
+Route::get('auth/register', 'Auth\AuthController@getRegister');
+Route::post('auth/register', 'Auth\AuthController@postRegister');
 
 //////////////////
 // v1 API calls //
@@ -38,3 +63,4 @@ Route::group(['prefix' => 'v1'], function () {
         Route::resource('tags', '' /* 'TagController' */ );
     });
 });
+
