@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use Validator;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -85,23 +86,39 @@ class UserController extends Controller
 
     public function apiLogUser(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'email'      => 'required|email',
+            'password'   => 'required|string'
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                [
+                    'header' => [
+                        'success' => 'no',
+                        'msg' => 'El formato del email o la contrasena no es correcto'
+                    ]
+                ]
+            ]);
+        }
+
         $email = $request->email;
         $password = $request->password;
+
         if (Auth::attempt(['email' => $email, 'password' => $password])) {
             $outcome = 'yes';
             $error = '';
         }
         else {
             $outcome = 'no';
-            $error = 'La combinacion de usuario y contrasena no es correcta.';
+            $error = 'La combinacion de email y contrasena no es correcta.';
         }
-        return response()->json(
-            [
-                'header' => [
-                    'success' => $outcome,
-                    'msg' => $error
+        return response()->json([
+                [
+                    'header' => [
+                        'success' => $outcome,
+                        'msg' => $error
+                    ]
                 ]
-            ]
-        );
+        ]);
     }
 }
