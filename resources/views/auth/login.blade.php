@@ -32,20 +32,20 @@
 
         <div>
             Email
-            <input type="email" name="email" value="{{ old('email') }}">
+            <input type="email" ng-model="sendEmail" value="{{ old('email') }}">
         </div>
 
         <div>
             Password
-            <input type="password" name="password" id="password">
+            <input type="password" ng-model="sendPassword" id="password">
         </div>
 
         <div>
-            <input type="checkbox" name="remember"> Remember Me
+            <input type="checkbox" ng-model="remember"> Remember Me
         </div>
 
         <div>
-            <button type="submit">Login</button>
+            <button type="submit" ng-click="login(sendEmail, sendPassword)">Login</button>
         </div>
     </form>
 </div>
