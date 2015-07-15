@@ -90,26 +90,18 @@ class UserController extends Controller
         if (Auth::attempt(['email' => $email, 'password' => $password])) {
             $outcome = 'yes';
             $error = '';
-            return response()->json(
-                [
-                    'header' => [
-                        'success' => $outcome,
-                        'msg' => $error
-                    ]
-                ]
-            );
         }
         else {
             $outcome = 'no';
             $error = 'La combinacion de usuario y contrasena no es correcta.';
-            return response()->json(
-                [
+        }
+        return response()->json(
+            [
                 'header' => [
                     'success' => $outcome,
                     'msg' => $error
-                    ]
                 ]
-            );
-        }
+            ]
+        );
     }
 }

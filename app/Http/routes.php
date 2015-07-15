@@ -26,9 +26,6 @@ Route::group(['prefix' => 'v1'], function () {
     // User related calls  //
     /////////////////////////
     Route::group(['prefix' => 'user'], function() {
-        Route::get('login', function() {
-            //
-        });
         Route::post('login', 'UserController@apiLogUser');
         Route::post('register', function() {
            //
@@ -37,18 +34,7 @@ Route::group(['prefix' => 'v1'], function () {
     ////////////////////////////////////////////////////////////////
     // Hashtags related calls (requires an authentificated user)  //
     ////////////////////////////////////////////////////////////////
-    Route::group(['prefix' => 'tags', 'middleware' => 'auth'], function() {
-        Route::post('add', function() {
-            //
-        });
-        Route::post('edit', function() {
-            //
-        });
-        Route::get('archive', function() {
-            //
-        });
-        Route::get('delete', function() {
-            //
-        });
+    Route::group(['middleware' => 'auth'], function() {
+        Route::resource('tags', '' /* 'TagController' */ );
     });
 });
