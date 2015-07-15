@@ -44,6 +44,7 @@ angular.module ('login').factory(
                // alert(sendEmail + sendPassword);
                 item.sendData({email:sendEmail, password:sendPassword}).$promise.then( function( data ){
                    console.log(data[0].header);
+
                     //angular.copy( data, resource.items);
                 });
             };
