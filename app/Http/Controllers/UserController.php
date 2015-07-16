@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Auth;
+
+use Log;
 use Validator;
 use Illuminate\Http\Request;
 
@@ -86,6 +88,10 @@ class UserController extends Controller
 
     public function apiLogUser(Request $request)
     {
+
+        $logItem = 'loginReqAPI: '.$request->email.' '.$request->password;
+        Log::debug($logItem);
+
         $validator = Validator::make($request->all(), [
             'email'      => 'required|email',
             'password'   => 'required|string'
@@ -133,12 +139,12 @@ class UserController extends Controller
             $error = 'No user to logout';
         }
         return response()->json([
-            [
-                'header' => [
-                    'success' => $outcome,
-                    'msg' => $error
+                [
+                    'header' => [
+                        'success' => $outcome,
+                        'msg' => $error
+                    ]
                 ]
-            ]
         ]);
     }
 }
