@@ -44,8 +44,7 @@
         <div class="container">
             <div class="content" ng-controller="MainController">
 
-               <!--
-                <div class="title">Hola {{ name }}</div>
+               <!--{{ name }}</div>
                 <input type="text" ng-model="name" />
                 <button ng-click="fnAlert( name )" >ALERTA</button>
                 -->
@@ -62,6 +61,7 @@
                 <!--
                 <div class="content" ng-controller="NameController">
                     <div class="title">Hola {{ name = 'Guillem' }}</div>
+                <div class="title">Hola
                 </div>
                 -->
             </div>

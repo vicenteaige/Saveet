@@ -20,7 +20,7 @@ angular.module('login').controller(
         function($scope, LoginModel){
             $scope.login = function(sendEmail, sendPassword){
                 //alert(sendEmail + sendPassword);
-                LoginModel.sendData(sendEmail, sendPassword);
+                LoginModel.sendData($scope, sendEmail, sendPassword);
 
             };
         }
@@ -31,7 +31,8 @@ angular.module ('login').factory(
     'LoginModel',
     [
         '$resource',
-        function ($resource ) {
+        '$window',
+        function ($resource, $window ) {
 
             var resource = {};
             //resource.items = [];
@@ -40,16 +41,19 @@ angular.module ('login').factory(
                 //getData : { method : 'GET', isArray : true }
             });
 
-            resource.sendData = function(sendEmail, sendPassword) {
+            resource.sendData = function($scope, sendEmail, sendPassword) {
                // alert(sendEmail + sendPassword);
                 item.sendData({email:sendEmail, password:sendPassword}).$promise.then( function( data ){
                    console.log(data[0].header);
-                    if (data[0].header.success.equals("yes")){
-                        //redirect to home
+                    if (data[0].header.success == "yes"){
+                        //window.location.replace = 'http://localhost:8080/home';
+                        $window.location.href = 'http://localhost:8080/home';
+                        //$location.url('/home');
 
-                    }else if(data[0].header.success.equals("no")){
+                    }else if(data[0].header.success == "no"){
                         //error message
-                        var error = data[0].header.success.msg;
+                        $scope.error = data[0].header.msg;
+                        $scope.myValue = true;
                     }
 
                 });
@@ -58,3 +62,4 @@ angular.module ('login').factory(
         }
     ]
 );
+

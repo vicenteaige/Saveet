@@ -118,6 +118,7 @@ class UserController extends Controller
             $outcome = 'no';
             $error = 'Wrong email and password combination';
         }
+        // return redirect('/home');
         return response()->json([
                 [
                     'header' => [

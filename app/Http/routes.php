@@ -35,6 +35,8 @@ Route::get('login', function(){
     return view('auth/login');
 });
 
+//Route::get('/iscorrect','UserController@AuthAndLog');
+
 Route::group(['middleware' => 'auth'], function() {
     Route::get('home', function(){
         return view('index');
