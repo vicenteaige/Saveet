@@ -72,7 +72,7 @@ Route::group(['prefix' => 'v1'], function () {
     });
 
     Route::group(['prefix' => 'twitter'], function() {
-        Route::get('/worldtrends', 'TwitterController@index');
+        Route::get('/worldtrends', 'TwitterController@getWorldTrends');
     });
 
 
