@@ -3,40 +3,29 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Hashtag;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-class item extends Controller
+class TagController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return Response
      */
-    public function index( )
+    public function index()
     {
-        return response()->json(
-            [
-                [
-                    'title'=> 'Azul',
-                    'desc'=> 'Descripción',
-                    'tipo'=> 1
-                ],
-                [
-                    'title'=> 'Verde',
-                    'desc'=> 'Descripción',
-                    'tipo'=> 2
-                ],
-                [
-                    'title'=> 'Amarillo',
-                    'desc'=> 'Hola',
-                    'tipo'=> 1
-                ]
-            ]
-        );
-    }
 
+        $hashtags = Hashtag::all();
+        
+        $obj = array();
+        foreach($hashtags as $hastag){
+            $obj[]=array('text'=>$hastag->name);
+        }
+
+        return response()->json($obj);
+   }
 
     /**
      * Show the form for creating a new resource.
@@ -53,9 +42,13 @@ class item extends Controller
      *
      * @return Response
      */
-    public function store()
+    public function store(Request $req)
     {
-        //
+        $tag = $req->input( 'tag' );
+        $hashtag = new Hashtag();
+        $hashtag->name = $tag;
+        $hashtag->save();
+
     }
 
     /**
@@ -66,7 +59,7 @@ class item extends Controller
      */
     public function show($id)
     {
-        //
+
     }
 
     /**
