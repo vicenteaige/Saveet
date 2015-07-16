@@ -32,29 +32,29 @@
 
     <div class="col-md-6">
         Name
-        <input type="text" name="name" value="{{ old('name') }}">
+        <input type="text" ng-model="sendName" value="{{ old('name') }}">
     </div>
 
     <div class="col-md-6">
 
         Email
-        <input type="email" name="email" value="{{ old('email') }}">
+        <input type="email" ng-model="sendEmail" value="{{ old('email') }}">
     </div>
 
     <div class="col-md-6">
 
         Password
-        <input type="password" name="password">
+        <input type="password" ng-model="sendPassword" id="password">
     </div>
 
     <div class="col-md-6">
         Confirm Password
-        <input type="password" name="password_confirmation">
+        <input type="password" ng-model="sendPasswordConfirmation" id="password_confirmation">
     </div>
 
     <div class="col-md-6">
 
-        <button type="submit">Register</button>
+        <button type="submit" ng-click="register(sendName, sendEmail, sendPassword, sendPasswordConfirmation)">Register</button>
     </div>
 </form>
 </body>
