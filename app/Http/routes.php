@@ -72,5 +72,12 @@ Route::group(['prefix' => 'v1'], function () {
     Route::group(['middleware' => 'auth'], function() {
         Route::resource('tags', '' /* 'TagController' */ );
     });
+
+    Route::group(['prefix' => 'twitter'], function() {
+        Route::get('/worldtrends', 'TwitterController@getWorldTrends');
+    });
+
+
+
 });
 
