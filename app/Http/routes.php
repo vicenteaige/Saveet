@@ -10,6 +10,13 @@
 |
 */
 
+Route::resource('v1/tag','TagController');
+
+ Route::get('tags', function () {
+     return view('tags');
+ });
+
+
 //////////
 // Home //
 //////////
@@ -52,6 +59,7 @@ Route::group(['prefix' => 'v1'], function () {
     /////////////////////////
     Route::group(['prefix' => 'user'], function() {
         Route::post('login', 'UserController@apiLogUser');
+        Route::get('logout', 'UserController@apiLogoutUser');
         Route::post('register', function() {
            //
         });

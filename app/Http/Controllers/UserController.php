@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Auth;
+
 use Log;
+use Validator;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -86,28 +88,63 @@ class UserController extends Controller
 
     public function apiLogUser(Request $request)
     {
+
         $logItem = 'loginReqAPI: '.$request->email.' '.$request->password;
         Log::debug($logItem);
+
+        $validator = Validator::make($request->all(), [
+            'email'      => 'required|email',
+            'password'   => 'required|string'
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                [
+                    'header' => [
+                        'success' => 'no',
+                        'msg' => 'Invalid email or password format'
+                    ]
+                ]
+            ]);
+        }
+
         $email = $request->email;
         $password = $request->password;
+
         if (Auth::attempt(['email' => $email, 'password' => $password])) {
             $outcome = 'yes';
             $error = '';
         }
         else {
             $outcome = 'no';
-            $error = 'La combinacion de usuario y contrasena no es correcta.';
+            $error = 'Wrong email and password combination';
         }
-        return response()->json(
-            [
+        return response()->json([
                 [
                     'header' => [
                         'success' => $outcome,
                         'msg' => $error
                     ]
                 ]
-            ]
+        ]);
+    }
 
-        );
+    public function apiLogOutUser()
+    {
+        if (Auth::logout()) {
+            $outcome = 'yes';
+            $error = '';
+        }
+        else {
+            $outcome = 'no';
+            $error = 'No user to logout';
+        }
+        return response()->json([
+                [
+                    'header' => [
+                        'success' => $outcome,
+                        'msg' => $error
+                    ]
+                ]
+        ]);
     }
 }
