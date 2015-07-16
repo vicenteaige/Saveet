@@ -49,16 +49,16 @@
     <body>
         <div class="container">
             <div class="content" ng-controller="MyCtrl" >
-                <div class="title">TAGS</div>
-                <h1>Selecciona un hastag a buscar</h1>
+                <div class="title">Sesión iniciada</div>
+                
                 <input type="text" ng-model="name">
                 <button ng-click=" envia ( name )">aceptar</button>            
 
-                    <h1>ngTagsInput:</h1>
-                    <tags-input ng-model="tags" on-tag-added="envia ( $tag.text )" >
+                    <h1>Hashtags de usuario:</h1>
+                    <tags-input ng-model="tags" on-tag-added="envia ( $tag.text )" onTagRemoved="elimina ($tag.text)" >
                         <auto-complete source="loadTags($query)"></auto-complete>
                     </tags-input>
-                </div>
+            </div>
 
  
 <!--               <div ng-controller="MyCtrl">

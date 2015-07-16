@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Validator;
 use Illuminate\Http\Request;
 use App\Hashtag;
 use App\Http\Requests;
@@ -20,8 +20,8 @@ class TagController extends Controller
         $hashtags = Hashtag::all();
         
         $obj = array();
-        foreach($hashtags as $hastag){
-            $obj[]=array('text'=>$hastag->name);
+        foreach($hashtags as $hashtag){
+            $obj[]=array('text'=>$hashtag->name);
         }
 
         return response()->json($obj);
@@ -44,10 +44,63 @@ class TagController extends Controller
      */
     public function store(Request $req)
     {
+
+
+        $validator = Validator::make($req->all(), [
+            'tag'      => 'required|unique:hashtags,name',
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                [
+                    'header' => [
+                        'success' => 'no',
+                        'msg' => 'Error insert hashtag, repetido'
+                    ]
+                ]
+            ]);
+        }
+
         $tag = $req->input( 'tag' );
         $hashtag = new Hashtag();
-        $hashtag->name = $tag;
+    
+        $hashtag->name = strtolower($tag);
+        
         $hashtag->save();
+
+        return response()->json([
+                [
+                    'header' => [
+                        'success' => 'yes',
+                        'msg' => ''
+                    ]
+                ]
+        ]);
+
+       
+
+
+        /*
+        try{
+            $hashtag->save();
+            return response()->json([
+                [
+                    'header' => [
+                        'success' => 'yes',
+                        'msg' => ''
+                    ]
+                ]
+            ]);
+
+        }catch(Exception $e){ 
+                return response()->json([
+                [
+                    'header' => [
+                        'success' => 'no',
+                        'msg' => 'Error insert hashtag'
+                    ]
+                ]
+            ]);
+        }*/
 
     }
 

@@ -7,29 +7,36 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-class Item extends Controller
+class item extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return Response
      */
-    public function index()
+    public function index( )
     {
         return response()->json(
             [
                 [
-                    'title' => 'Título 1',
-                    'desc' => 'Descripción 1',
-                    'tipo' => 1
-                ],[
-                    'title' => 'Título 2',
-                    'desc' => 'Descripción 2',
-                    'tipo' => 2
+                    'title'=> 'Azul',
+                    'desc'=> 'Descripción',
+                    'tipo'=> 1
+                ],
+                [
+                    'title'=> 'Verde',
+                    'desc'=> 'Descripción',
+                    'tipo'=> 2
+                ],
+                [
+                    'title'=> 'Amarillo',
+                    'desc'=> 'Hola',
+                    'tipo'=> 1
                 ]
             ]
         );
     }
+
 
     /**
      * Show the form for creating a new resource.
