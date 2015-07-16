@@ -1,61 +1,36 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="register">
 <head>
     <title>Register</title>
+    <script src="/bower_components/angular/angular.js"></script>
+    <script src="/bower_components/angular-resource/angular-resource.js"></script>
     <script src="/bower_components/jquery/dist/jquery.js"></script>
     <script src="/bower_components/bootstrap/js/bootstrap.js"></script>
     <link rel="stylesheet" href="/bower_components/bootstrap/css/bootstrap.css" type="text/css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/js/register.js"></script>
 </head>
 <body>
 
-<h1>Register</h1>
-<!--﻿
-<form name="form" method="post" action="">
-    <div>Username</div>
-    <div><input type="text" name="username" size=50></div>
-    <br>
-
-    <div>Password</div>
-    <div><input type="password" name="password" size=50></div>
-    <br>
-
-    <div>Repeat password:</div>
-    <div><input type="password" name="password" size=50></div>
-    <br>
-</form>
--->
-
 <!-- resources/views/auth/register.blade.php -->
 
-<form method="POST" action="/auth/register">
-    {!! csrf_field() !!}
+<div class="container" ng-controller="MainController">
 
-    <div class="col-md-6">
-        Name
-        <input type="text" name="name" value="{{ old('name') }}">
+    <div class="form-signin" method="POST" action="/auth/register">
+        {!! csrf_field() !!}
+        <h2 class="form-signin-heading">Please register on</h2>
+        <label for="inputName" class="sr-only">Name</label>
+        <input type="text" ng-model="sendName" value="{{ old('name') }}" id="name" class="form-control no_radius_bottom bottom_less1" placeholder="Enter your name" required autofocus>
+        <label for="inputEmail" class="sr-only">Email address</label>
+        <input type="email" ng-model="sendEmail" value="{{ old('email') }}" id="email" class="form-control no_radius bottom_less1" placeholder="Email address" required autofocus>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" id="password" ng-model="sendPassword" class="form-control no_radius bottom_less1" placeholder="Password" required>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" ng-model="sendPasswordConfirmation" id="password_confirmation" class="form-control no_radius_top bottom_plus10" placeholder="Password Confirmation" required>
+        <button class="btn btn-lg btn-primary btn-block" ng-click="register(sendName, sendEmail, sendPassword, sendPasswordConfirmation)">Register</button>
     </div>
 
-    <div class="col-md-6">
+</div>
 
-        Email
-        <input type="email" name="email" value="{{ old('email') }}">
-    </div>
-
-    <div class="col-md-6">
-
-        Password
-        <input type="password" name="password">
-    </div>
-
-    <div class="col-md-6">
-        Confirm Password
-        <input type="password" name="password_confirmation">
-    </div>
-
-    <div class="col-md-6">
-
-        <button type="submit">Register</button>
-    </div>
-</form>
 </body>
 </html>
