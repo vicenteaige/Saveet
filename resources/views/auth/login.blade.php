@@ -38,7 +38,7 @@
 </div>-->
 <div class="container" ng-controller="MainController">
 
-    <div class="form-signin" method="POST" action="/auth/login">
+    <form class="form-signin" method="POST" action="/auth/login">
         {!! csrf_field() !!}
         <h2 class="form-signin-heading">Please sign in</h2>
         <label for="inputEmail" class="sr-only">Email address</label>
@@ -46,12 +46,13 @@
         <label for="inputPassword" class="sr-only">Password</label>
         <input type="password" id="inputPassword" ng-model="sendPassword" class="form-control" placeholder="Password" required>
         <div class="checkbox">
+            <div ng-show="myValue" class="alert alert-danger" role="alert">{{ error }}</div>
             <label>
                 <input type="checkbox" ng-model="remember" value="remember-me"> Remember me
             </label>
         </div>
         <button class="btn btn-lg btn-primary btn-block"  ng-click="login(sendEmail, sendPassword)">Sign in</button>
-    </div>
+    </form>
 
 </div> <!-- /container -->
 

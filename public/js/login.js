@@ -44,8 +44,14 @@ angular.module ('login').factory(
                // alert(sendEmail + sendPassword);
                 item.sendData({email:sendEmail, password:sendPassword}).$promise.then( function( data ){
                    console.log(data[0].header);
+                    if (data[0].header.success.equals("yes")){
+                        //redirect to home
 
-                    //angular.copy( data, resource.items);
+                    }else if(data[0].header.success.equals("no")){
+                        //error message
+                        var error = data[0].header.success.msg;
+                    }
+
                 });
             };
             return resource;
