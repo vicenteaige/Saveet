@@ -80,6 +80,7 @@ Route::group(['prefix' => 'v1'], function () {
            //
         });
         Route::post('password/reset', 'Auth\PasswordController@apiResetPassword');
+        Route::post('password/change', 'Auth\PasswordController@apiChangePassword');
     });
     ////////////////////////////////////////////////////////////////
     // Hashtags related calls (requires an authentificated user)  //
