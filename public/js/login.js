@@ -30,7 +30,6 @@ angular.module ('login').factory(
             });
 
             resource.sendData = function($scope, sendEmail, sendPassword) {
-               // alert(sendEmail + sendPassword);
                 item.sendData({email:sendEmail, password:sendPassword}).$promise.then( function( data ){
                    console.log(data.header);
                     if (data.header.success == "yes"){
