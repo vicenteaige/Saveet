@@ -18,7 +18,7 @@
 
     <form class="form-signin" method="POST" action="/auth/register">
         {!! csrf_field() !!}
-        <h2 class="form-signin-heading">Please Sign Up</h2>
+        <h2 class="form-signin-heading">Please Sing Up</h2>
         <label for="inputName" class="sr-only">Name</label>
         <input type="text" ng-model="sendName" value="{{ old('name') }}" id="name" class="form-control no_radius_bottom bottom_less1" placeholder="Enter your name" required autofocus>
         <label for="inputEmail" class="sr-only">Email address</label>

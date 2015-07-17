@@ -10,8 +10,8 @@ use Illuminate\Http\Request;
 
 /*
  * Twitter Api Exchange
- * Ad "j7mbo/twitter-api-php": "dev-master" to your package.json
- * run composer.phar (install or update)
+ * Ad "j7mbo/twitter-api-php": "dev-master" to your composer.json
+ * run composer.phar (install)
  * run php composer.phar dump-auto
 */
 use TwitterAPIExchange;
@@ -34,23 +34,12 @@ class TwitterController extends Controller
     }
 
     /**
-     * Loads an array of valid woeid places
-     *
-     * @return Array of woeids
-     */
-    private function getPlaces(){
-
-    }
-
-    /**
-     * Display the Top 10 World Trends
+     * Displays the Top 10 World Trends
      *
      * @return Response
      */
     public function getWorldTrends()
     {
-
-        $env = env('APP_DEBUG');
 
         $url = 'https://api.twitter.com/1.1/trends/place.json';
         $getfield = '?id=1';
@@ -70,7 +59,25 @@ class TwitterController extends Controller
     }
 
     /**
-     * Display trends by location.
+     * Loads an array of locations and they woid identifier.
+     *
+     * @return Array of woeids
+     */
+    private function getPlaces(){
+        return array(
+            'barcelona' => 753692,
+            'madrid'    => 766273,
+            'sevilla'   => 774508,
+            'bilbao'    => 754542,
+            'donostia'  => 773418,
+            'corunha'   => 763246,
+            'leon'      => 765099,
+            'santander' => 773964
+        );
+    }
+
+    /**
+     * Displays top Top 10 trends by a given woid location.
      *
      * @return Response
      */
@@ -78,10 +85,9 @@ class TwitterController extends Controller
     {
 
         $url = 'https://api.twitter.com/1.1/trends/place.json';
-        $getfield = '?id='.$woeid;
+        $getfield = '?id='.urldecode($woeid);
         $requestMethod = 'GET';
 
-        $test = str('sdsd');
 
         $twitter = new TwitterAPIExchange($this->getTwitterSettings());
         $response = $twitter->setGetfield($getfield)
