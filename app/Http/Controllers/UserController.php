@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use Auth;
-
-use Log;
 use Validator;
 use Illuminate\Http\Request;
 use App\User;
@@ -117,10 +115,6 @@ class UserController extends Controller
 
     public function apiLogUser(Request $request)
     {
-
-        $logItem = 'loginReqAPI: '.$request->email.' '.$request->password;
-        Log::debug($logItem);
-
         $validator = Validator::make($request->all(), [
             'email'      => 'required|email',
             'password'   => 'required|string'
@@ -140,40 +134,30 @@ class UserController extends Controller
         $password = $request->password;
 
         if (Auth::attempt(['email' => $email, 'password' => $password])) {
+            $httpStatus = 200;
             $outcome = 'yes';
             $error = '';
         }
         else {
+            $httpStatus = 401;
             $outcome = 'no';
             $error = 'Wrong email and password combination';
         }
-        return response()->json([
-                [
-                    'header' => [
-                        'success' => $outcome,
-                        'msg' => $error
-                    ]
-                ]
-        ]);
+        return response()->api($httpStatus, $outcome, $error, '');
     }
 
     public function apiLogOutUser()
     {
         if (Auth::logout()) {
+            $httpStatus = 200;
             $outcome = 'yes';
             $error = '';
         }
         else {
+            $httpStatus = 400;
             $outcome = 'no';
             $error = 'No user to logout';
         }
-        return response()->json([
-                [
-                    'header' => [
-                        'success' => $outcome,
-                        'msg' => $error
-                    ]
-                ]
-        ]);
+        return response()->api($httpStatus, $outcome, $error, '');
     }
 }
