@@ -12,7 +12,9 @@
 
 Route::resource('v1/tag','TagController');
 
- Route::get('tags', function () {
+Route::delete('v1/tag/{id}','TagController@destroy');
+
+Route::get('tags', function () {
      return view('tags');
  });
 
@@ -60,7 +62,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::group(['prefix' => 'user'], function() {
         Route::post('login', 'UserController@apiLogUser');
         Route::get('logout', 'UserController@apiLogoutUser');
-        Route::post('register', 'UserController@apiRegisterUser');
+        Route::resource('register', 'UserController');
     });
     ////////////////////////////////////////////////////////////////
     // Hashtags related calls (requires an authentificated user)  //
