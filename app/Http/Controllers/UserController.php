@@ -97,14 +97,14 @@ class UserController extends Controller
             'password'   => 'required|string'
         ]);
         if ($validator->fails()) {
-            return response()->json([
+            return response()->json(
                 [
                     'header' => [
                         'success' => 'no',
                         'msg' => 'Invalid email or password format'
                     ]
                 ]
-            ]);
+            );
         }
 
         $email = $request->email;
@@ -119,33 +119,48 @@ class UserController extends Controller
             $error = 'Wrong email and password combination';
         }
         // return redirect('/home');
-        return response()->json([
+        return response()->json(
                 [
                     'header' => [
                         'success' => $outcome,
                         'msg' => $error
                     ]
                 ]
-        ]);
+        );
     }
 
     public function apiLogOutUser()
     {
-        if (Auth::logout()) {
+        Auth::logout();
+        if (!Auth::check()) {
             $outcome = 'yes';
             $error = '';
         }
         else {
+            $name = Auth::getUser()->name;
             $outcome = 'no';
-            $error = 'No user to logout';
+            $error = 'User: '.$name ;
         }
-        return response()->json([
+        return response()->json(
                 [
                     'header' => [
                         'success' => $outcome,
                         'msg' => $error
                     ]
                 ]
-        ]);
+        );
+    }
+
+    public function apiGetLoggedUser() {
+        $outcome = 'ok';
+        $message = Auth::getUser()->name;
+        return response()->json(
+            [
+                'header' => [
+                    'success' => $outcome,
+                    'msg' => $message
+                ]
+            ]
+        );
     }
 }

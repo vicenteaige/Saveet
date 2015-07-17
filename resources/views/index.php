@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html ng-app="bootcamp" >
+<html ng-app="logout" xmlns="http://www.w3.org/1999/html">
 
     <head>
         <title>Laravel</title>
@@ -9,8 +9,10 @@
 
         <script src="/bower_components/angular/angular.js"></script>
         <script src="/bower_components/angular-resource/angular-resource.js"></script>
-
-        <script src="/js/bootcamp.js"></script>
+        <script src="/bower_components/jquery/dist/jquery.js"></script>
+        <script src="/bower_components/bootstrap/js/bootstrap.js"></script>
+        <link rel="stylesheet" href="/bower_components/bootstrap/css/bootstrap.css" type="text/css">
+        <script src="/js/logout.js"></script>
         <style>
             html, body {
                 height: 100%;
@@ -27,7 +29,7 @@
             .container {
                 text-align: center;
                 display: table-cell;
-                vertical-align: middle;
+                vertical-align: top;
             }
 
             .content {
@@ -41,32 +43,13 @@
         </style>
     </head>
     <body>
-        <div class="container">
-            <div class="content" ng-controller="MainController">
-
-               <!--{{ name }}</div>
-                <input type="text" ng-model="name" />
-                <button ng-click="fnAlert( name )" >ALERTA</button>
-                -->
-
-                <hr />
-                <section>
-                    <input type="text" ng-model="buscar" />
-                    <article ng-repeat="item in items | filter : buscar">
-                        <h1>{{item.title}}</h1>
-                        <span>{{item.desc}}</span>
-                    </article>
-                </section>
-                <hr />
-                <!--
-                <div class="content" ng-controller="NameController">
-                    <div class="title">Hola {{ name = 'Guillem' }}</div>
-                <div class="title">Hola
-                </div>
-                -->
-            </div>
-
+    <div class="container" ng-controller="LogoutController">
+        <div class="jumbotron">
+            <h1>Home</h1>
         </div>
+        <p><a href="" ng-click="logout()">Log out</a></p>
+
+    </div>
     </body>
 </html>
 

@@ -35,8 +35,6 @@ Route::get('login', function(){
     return view('auth/login');
 });
 
-//Route::get('/iscorrect','UserController@AuthAndLog');
-
 Route::group(['middleware' => 'auth'], function() {
     Route::get('home', function(){
         return view('index');
@@ -60,6 +58,7 @@ Route::group(['prefix' => 'v1'], function () {
     // User related calls  //
     /////////////////////////
     Route::group(['prefix' => 'user'], function() {
+        Route::get('', 'UserController@apiGetLoggedUser');
         Route::post('login', 'UserController@apiLogUser');
         Route::get('logout', 'UserController@apiLogoutUser');
         Route::post('register', function() {
