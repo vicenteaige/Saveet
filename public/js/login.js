@@ -30,17 +30,20 @@ angular.module ('login').factory(
             });
 
             resource.sendData = function($scope, sendEmail, sendPassword) {
-                item.sendData({email:sendEmail, password:sendPassword}).$promise.then( function( data ){
-                   console.log(data.header);
-                    if (data.header.success == "yes"){
-                        $window.location.href = 'http://localhost:8080/home';
-
-                    }else{
+                item.sendData({email:sendEmail, password:sendPassword}).$promise.then(
+                    //Success callback
+                    function( data ){
+                        console.log(data);
+                        if (data.header.success == "yes"){
+                            $window.location.href = 'http://localhost:8080/home';
+                        }
+                    },
+                    //Failure callback
+                    function (data){
+                        console.log(data);
                         //error message
-                        $scope.error = data.header.msg;
+                        $scope.error = data.data.header.msg;
                         $scope.myValue = true;
-                    }
-
                 });
             };
             return resource;
