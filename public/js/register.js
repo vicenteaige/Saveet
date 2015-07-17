@@ -11,8 +11,8 @@ angular.module('register').controller(
             $scope.register = function(sendName, sendEmail, sendTwitterUserName, sendPassword, sendPasswordConfirmation){
                 RegisterModel.sendData(sendName, sendEmail, sendTwitterUserName, sendPassword, sendPasswordConfirmation);
                 //alert(sendEmail + " " + sendTwitterUserName);
+                $event.preventDefault();
             };
-            //$event.preventDefault();
         }
     ]
 );
