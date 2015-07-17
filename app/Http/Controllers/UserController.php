@@ -59,14 +59,7 @@ class UserController extends Controller
             $outcome = 'yes';
             $error = '';
         }
-        return response()->json(
-            [
-                'header' => [
-                    'success' => $outcome,
-                    'msg' => $error
-                ]
-            ]
-        );
+        return response()->api(200, $outcome, $error, '');
     }
 
     /**
@@ -120,14 +113,7 @@ class UserController extends Controller
             'password'   => 'required|string'
         ]);
         if ($validator->fails()) {
-            return response()->json([
-                [
-                    'header' => [
-                        'success' => 'no',
-                        'msg' => 'Invalid email or password format'
-                    ]
-                ]
-            ]);
+            return response()->api(400, 'no', 'Invalid email or password format', '');
         }
 
         $email = $request->email;
@@ -146,9 +132,20 @@ class UserController extends Controller
         return response()->api($httpStatus, $outcome, $error, '');
     }
 
+    public function apiGetLoggedUser()
+    {
+        if (Auth::check()) {
+            return response()->api(200, 'yes', Auth::getUser()->email, '');
+        }
+        else {
+            return response()->api(400, 'no', 'No logged user', '');
+        }
+    }
+
     public function apiLogOutUser()
     {
-        if (Auth::logout()) {
+        Auth::logout();
+        if (!Auth::check()) {
             $httpStatus = 200;
             $outcome = 'yes';
             $error = '';
@@ -156,7 +153,7 @@ class UserController extends Controller
         else {
             $httpStatus = 400;
             $outcome = 'no';
-            $error = 'No user to logout';
+            $error = 'Failed. User still logged';
         }
         return response()->api($httpStatus, $outcome, $error, '');
     }

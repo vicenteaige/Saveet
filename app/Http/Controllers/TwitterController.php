@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 /*
  * Twitter Api Exchange
  * Ad "j7mbo/twitter-api-php": "dev-master" to your package.json
- * run composer.phar (install or update)
+ * run composer.phar (install)
  * run php composer.phar dump-auto
 */
 use TwitterAPIExchange;

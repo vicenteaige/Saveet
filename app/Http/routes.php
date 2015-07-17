@@ -69,7 +69,7 @@ Route::group(['prefix' => 'v1'], function () {
     // Hashtags related calls (requires an authentificated user)  //
     ////////////////////////////////////////////////////////////////
     Route::group(['middleware' => 'auth'], function() {
-        Route::resource('tags', '' /* 'TagController' */ );
+        //Route::resource('tags', '' /* 'TagController' */ );
     });
 
     Route::group(['prefix' => 'twitter'], function() {
