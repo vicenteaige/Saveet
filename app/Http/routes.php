@@ -58,6 +58,7 @@ Route::group(['prefix' => 'v1'], function () {
     // User related calls  //
     /////////////////////////
     Route::group(['prefix' => 'user'], function() {
+        Route::get('', 'UserController@apiGetLoggedUser');
         Route::post('login', 'UserController@apiLogUser');
         Route::get('logout', 'UserController@apiLogoutUser');
         Route::resource('register', 'UserController');
