@@ -89,6 +89,7 @@ class TwitterController extends Controller
      * Returns the Top 10 World Trends
      *
      * @return Array of Twitter Trends
+     * @throws \Exception
      */
     private function requestWorldTrends()
     {
@@ -109,13 +110,15 @@ class TwitterController extends Controller
             return $rsArray[0];
         }
 
-        abort(500, "Twitter error: ".$rsJsonString);
+        abort("Twitter error: ".$rsJsonString, 500);
     }
 
     /**
      * Returns the Top 10 trends by a given $woeid location.
      *
+     * @param $woeid
      * @return Array of Twitter Trends
+     * @throws \Exception
      */
     private function requestTrendsByLocation($woeid)
     {
