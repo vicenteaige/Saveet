@@ -12,7 +12,9 @@
 
 Route::resource('v1/tag','TagController');
 
- Route::get('tags', function () {
+Route::delete('v1/tag/{id}','TagController@destroy');
+
+Route::get('tags', function () {
      return view('tags');
  });
 

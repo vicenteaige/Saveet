@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Hashtag;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Log;
 
 class TagController extends Controller
 {
@@ -44,8 +45,6 @@ class TagController extends Controller
      */
     public function store(Request $req)
     {
-
-
         $validator = Validator::make($req->all(), [
             'tag'      => 'required|unique:hashtags,name',
         ]);
@@ -62,9 +61,11 @@ class TagController extends Controller
 
         $tag = $req->input( 'tag' );
         $hashtag = new Hashtag();
-    
+        
+        //Hashtag en minúsculas
         $hashtag->name = strtolower($tag);
         
+        //Añade Hashtag a la tabla hashtags mysql
         $hashtag->save();
 
         return response()->json([
@@ -75,33 +76,6 @@ class TagController extends Controller
                     ]
                 ]
         ]);
-
-       
-
-
-        /*
-        try{
-            $hashtag->save();
-            return response()->json([
-                [
-                    'header' => [
-                        'success' => 'yes',
-                        'msg' => ''
-                    ]
-                ]
-            ]);
-
-        }catch(Exception $e){ 
-                return response()->json([
-                [
-                    'header' => [
-                        'success' => 'no',
-                        'msg' => 'Error insert hashtag'
-                    ]
-                ]
-            ]);
-        }*/
-
     }
 
     /**
@@ -145,6 +119,13 @@ class TagController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Log::debug('tagcontroller destroy');
+        //Eliminar tag de mysql
+        //$tag = $req->input( 'tag' );
+        $hashtag = Hashtag::where('name', $id)->firstOrFail();
+        
+        //Añade Hashtag a la tabla hashtags mysql
+        $hashtag->delete();
+        
     }
 }
