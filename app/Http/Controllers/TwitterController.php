@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-
-
 use Log;
 use App\Http\Requests;
 use Illuminate\Http\Request;
@@ -28,9 +26,11 @@ class TwitterController extends Controller
      */
     public function getWorldTrends()
     {
+        # Request twitter world trends and prepare response
+        $response['trends'] = $this->requestWorldTrends();
 
         return response()
-                    ->json(json_decode($this->requestWorldTrends()))
+                    ->json($response)
                     ->header('Content-Type', 'application/json');
     }
 
@@ -41,13 +41,13 @@ class TwitterController extends Controller
      */
     public function getLocationTrends()
     {
-        $locationTrends = [];
+        $response = [];
         foreach ($this->getPlaces() as $city => $woeid) {
-            $locationTrends[] = $this->requestTrendsByLocation($woeid);
+            $response['trends'] = $this->requestTrendsByLocation($woeid);
         }
 
         return response()
-            ->json($locationTrends)
+            ->json($response)
             ->header('Content-Type', 'application/json');
     }
 
@@ -107,10 +107,13 @@ class TwitterController extends Controller
         $rsArray = json_decode($rsJsonString, true);
 
         if (!array_key_exists('errors', $rsArray)){
-            return $rsArray[0];
+            $trends = [];
+            foreach ($rsArray[0]['trends'] as $trend)
+                $trends[] = $trend['name'];
+            return $trends;
         }
 
-        abort("Twitter error: ".$rsJsonString, 500);
+        abort(500, "Twitter error: ".$rsJsonString);
     }
 
     /**
@@ -136,7 +139,10 @@ class TwitterController extends Controller
         $rsArray = json_decode($rsJsonString, true);
 
         if (!array_key_exists('errors', $rsArray)){
-            return $rsArray[0];
+            $trends = [];
+            foreach ($rsArray[0]['trends'] as $trend)
+                $trends[] = $trend['name'];
+            return $trends;
         }
 
         abort(500, "Twitter error: ".$rsJsonString);
