@@ -148,16 +148,36 @@ class UserController extends Controller
 
     public function apiLogOutUser()
     {
-        if (Auth::logout()) {
-            $httpStatus = 200;
+        Auth::logout();
+        if (!Auth::check()) {
             $outcome = 'yes';
             $error = '';
         }
         else {
-            $httpStatus = 400;
+            $name = Auth::getUser()->name;
             $outcome = 'no';
-            $error = 'No user to logout';
+            $error = 'User: '.$name ;
         }
-        return response()->api($httpStatus, $outcome, $error, '');
+        return response()->json(
+            [
+                'header' => [
+                    'success' => $outcome,
+                    'msg' => $error
+                ]
+            ]
+        );
+    }
+
+    public function apiGetLoggedUser() {
+        $outcome = 'ok';
+        $message = Auth::getUser()->name;
+        return response()->json(
+            [
+                'header' => [
+                    'success' => $outcome,
+                    'msg' => $message
+                ]
+            ]
+        );
     }
 }
