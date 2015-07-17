@@ -12,7 +12,9 @@
 
 Route::resource('v1/tag','TagController');
 
- Route::get('tags', function () {
+Route::delete('v1/tag/{id}','TagController@destroy');
+
+Route::get('tags', function () {
      return view('tags');
  });
 
@@ -74,12 +76,17 @@ Route::group(['prefix' => 'v1'], function () {
     // User related calls  //
     /////////////////////////
     Route::group(['prefix' => 'user'], function() {
+        Route::get('', 'UserController@apiGetLoggedUser');
         Route::post('login', 'UserController@apiLogUser');
         Route::get('logout', 'UserController@apiLogoutUser');
+<<<<<<< HEAD
         Route::post('register', function() {
            //
         });
         Route::post('password/reset', 'Auth\PasswordController@apiResetPassword');
+=======
+        Route::resource('register', 'UserController');
+>>>>>>> 36b8edf38aa4ab7acdc106f8d2ddde6155210b1c
     });
     ////////////////////////////////////////////////////////////////
     // Hashtags related calls (requires an authentificated user)  //
@@ -90,8 +97,7 @@ Route::group(['prefix' => 'v1'], function () {
 
     Route::group(['prefix' => 'twitter'], function() {
         Route::get('/worldtrends', 'TwitterController@getWorldTrends');
+        Route::get('/location/{woid}', 'TwitterController@getTrendsByLocation');
     });
-
-
 
 });

@@ -48,3 +48,8 @@ body {
     border-top-right-radius: 0;
     border-top-left-radius: 0;
 }
+
+#signup{
+    margin-top: 10px;
+    text-align: center;
+}

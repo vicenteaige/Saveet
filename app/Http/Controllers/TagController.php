@@ -1,11 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Validator;
 use Illuminate\Http\Request;
 use App\Hashtag;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Log;
 
 class TagController extends Controller
 {
@@ -20,8 +21,8 @@ class TagController extends Controller
         $hashtags = Hashtag::all();
         
         $obj = array();
-        foreach($hashtags as $hastag){
-            $obj[]=array('text'=>$hastag->name);
+        foreach($hashtags as $hashtag){
+            $obj[]=array('text'=>$hashtag->name);
         }
 
         return response()->json($obj);
@@ -44,11 +45,37 @@ class TagController extends Controller
      */
     public function store(Request $req)
     {
+        $validator = Validator::make($req->all(), [
+            'tag'      => 'required|unique:hashtags,name',
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                [
+                    'header' => [
+                        'success' => 'no',
+                        'msg' => 'Error insert hashtag, repetido'
+                    ]
+                ]
+            ]);
+        }
+
         $tag = $req->input( 'tag' );
         $hashtag = new Hashtag();
-        $hashtag->name = $tag;
+        
+        //Hashtag en minúsculas
+        $hashtag->name = strtolower($tag);
+        
+        //Añade Hashtag a la tabla hashtags mysql
         $hashtag->save();
 
+        return response()->json([
+                [
+                    'header' => [
+                        'success' => 'yes',
+                        'msg' => ''
+                    ]
+                ]
+        ]);
     }
 
     /**
@@ -92,6 +119,13 @@ class TagController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Log::debug('tagcontroller destroy');
+        //Eliminar tag de mysql
+        //$tag = $req->input( 'tag' );
+        $hashtag = Hashtag::where('name', $id)->firstOrFail();
+        
+        //Añade Hashtag a la tabla hashtags mysql
+        $hashtag->delete();
+        
     }
 }
