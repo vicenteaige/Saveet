@@ -41,14 +41,18 @@ class TwitterController extends Controller
      */
     public function getLocationTrends()
     {
-        $response = [];
+
+        $trends = [];
+
         foreach ($this->getPlaces() as $city => $woeid) {
-            $response['trends'] = $this->requestTrendsByLocation($woeid);
+            $trends = array_merge($trends, $this->requestTrendsByLocation($woeid));
         }
 
+        $response = array('trends' => $trends);
+
         return response()
-            ->json($response)
-            ->header('Content-Type', 'application/json');
+                    ->json($response)
+                    ->header('Content-Type', 'application/json');
     }
 
     # Private Methods
