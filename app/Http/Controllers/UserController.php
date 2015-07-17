@@ -120,14 +120,14 @@ class UserController extends Controller
             'password'   => 'required|string'
         ]);
         if ($validator->fails()) {
-            return response()->json([
+            return response()->json(
                 [
                     'header' => [
                         'success' => 'no',
                         'msg' => 'Invalid email or password format'
                     ]
                 ]
-            ]);
+            );
         }
 
         $email = $request->email;
