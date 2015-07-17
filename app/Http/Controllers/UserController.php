@@ -7,7 +7,7 @@ use Auth;
 use Log;
 use Validator;
 use Illuminate\Http\Request;
-
+use App\User;
 use App\Http\Requests;
 
 class UserController extends Controller
@@ -37,9 +37,14 @@ class UserController extends Controller
      *
      * @return Response
      */
-    public function store()
+    public function store(Request $request)
     {
-        //
+        $newuser = new User();
+        $newuser->name = $request->name;
+        $newuser->email = $request->email;
+        $newuser->password = $request->password;
+        $newuser->save();
+
     }
 
     /**
@@ -84,6 +89,32 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function apiRegisterUser(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name'       => 'required|string|unique:users',
+            'email'      => 'required|email',
+            'password'   => 'required|confirmed|string',
+            'password_confirmation' => 'required|string'
+        ]);
+        if($validator->fails()){
+            $outcome = 'no';
+            $error = 'Some field is wrong';
+        }
+        else {
+            $outcome = 'yes';
+            $error = '';
+        }
+        return response()->json(
+            [
+                'header' => [
+                    'success' => $outcome,
+                    'msg' => $error
+                ]
+            ]
+        );
     }
 
     public function apiLogUser(Request $request)

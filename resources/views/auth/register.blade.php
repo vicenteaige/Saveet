@@ -16,7 +16,7 @@
 
 <div class="container" ng-controller="MainController">
 
-    <div class="form-signin" method="POST" action="/auth/register">
+    <form class="form-signin" method="POST" action="/auth/register">
         {!! csrf_field() !!}
         <h2 class="form-signin-heading">Please register on</h2>
         <label for="inputName" class="sr-only">Name</label>
@@ -27,8 +27,8 @@
         <input type="password" id="password" ng-model="sendPassword" class="form-control no_radius bottom_less1" placeholder="Password" required>
         <label for="inputPassword" class="sr-only">Password</label>
         <input type="password" ng-model="sendPasswordConfirmation" id="password_confirmation" class="form-control no_radius_top bottom_plus10" placeholder="Password Confirmation" required>
-        <button class="btn btn-lg btn-primary btn-block" ng-click="register(sendName, sendEmail, sendPassword, sendPasswordConfirmation)">Register</button>
-    </div>
+        <button class="btn btn-lg btn-primary btn-block" ng-click="register(sendName, sendEmail, sendPassword, sendPasswordConfirmation, event)">Register</button>
+    </form>
 
 </div>
 
