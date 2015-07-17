@@ -39,12 +39,36 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $newuser = new User();
-        $newuser->name = $request->name;
-        $newuser->email = $request->email;
-        $newuser->password = $request->password;
-        $newuser->save();
+        $validator = Validator::make($request->all(), [
+            'name'       => 'required|string',
+            'email'      => 'required|email|unique:users,email',
+            'twitter_username' => 'string',
+            'password'   => 'required|confirmed|string',
+            'password_confirmation' => 'required|string'
+        ]);
+        if($validator->fails()){
+            $outcome = 'no';
+            $error = 'Some field is wrong';
+        }
+        else {
+            $newuser = new User();
+            $newuser->name = $request->name;
+            $newuser->email = $request->email;
+            $newuser->twitter_username = $request->twitter_username;
+            $newuser->password = bcrypt($request->password);
+            $newuser->save();
 
+            $outcome = 'yes';
+            $error = '';
+        }
+        return response()->json(
+            [
+                'header' => [
+                    'success' => $outcome,
+                    'msg' => $error
+                ]
+            ]
+        );
     }
 
     /**
@@ -89,32 +113,6 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    public function apiRegisterUser(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'name'       => 'required|string|unique:users',
-            'email'      => 'required|email',
-            'password'   => 'required|confirmed|string',
-            'password_confirmation' => 'required|string'
-        ]);
-        if($validator->fails()){
-            $outcome = 'no';
-            $error = 'Some field is wrong';
-        }
-        else {
-            $outcome = 'yes';
-            $error = '';
-        }
-        return response()->json(
-            [
-                'header' => [
-                    'success' => $outcome,
-                    'msg' => $error
-                ]
-            ]
-        );
     }
 
     public function apiLogUser(Request $request)

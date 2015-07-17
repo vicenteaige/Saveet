@@ -23,11 +23,13 @@
         <input type="text" ng-model="sendName" value="{{ old('name') }}" id="name" class="form-control no_radius_bottom bottom_less1" placeholder="Enter your name" required autofocus>
         <label for="inputEmail" class="sr-only">Email address</label>
         <input type="email" ng-model="sendEmail" value="{{ old('email') }}" id="email" class="form-control no_radius bottom_less1" placeholder="Email address" required autofocus>
+        <label for="inputTwitterUserName" class="sr-only">Twitter UserName</label>
+        <input type="text" ng-model="sendTwitterUserName" value="{{ old('twitter_username') }}" id="twitter_username" class="form-control no_radius bottom_less1" placeholder="Twitter username, not required" autofocus>
         <label for="inputPassword" class="sr-only">Password</label>
         <input type="password" id="password" ng-model="sendPassword" class="form-control no_radius bottom_less1" placeholder="Password" required>
-        <label for="inputPassword" class="sr-only">Password</label>
+        <label for="inputPasswordConfirmation" class="sr-only">Password</label>
         <input type="password" ng-model="sendPasswordConfirmation" id="password_confirmation" class="form-control no_radius_top bottom_plus10" placeholder="Password Confirmation" required>
-        <button class="btn btn-lg btn-primary btn-block" ng-click="register(sendName, sendEmail, sendPassword, sendPasswordConfirmation, event)">Register</button>
+        <button class="btn btn-lg btn-primary btn-block" ng-click="register(sendName, sendEmail, sendTwitterUserName, sendPassword, sendPasswordConfirmation, event)">Register</button>
     </form>
 
 </div>

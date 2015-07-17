@@ -60,7 +60,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::group(['prefix' => 'user'], function() {
         Route::post('login', 'UserController@apiLogUser');
         Route::get('logout', 'UserController@apiLogoutUser');
-        Route::post('register', 'UserController@apiRegisterUser');
+        Route::resource('register', 'UserController');
     });
     ////////////////////////////////////////////////////////////////
     // Hashtags related calls (requires an authentificated user)  //
