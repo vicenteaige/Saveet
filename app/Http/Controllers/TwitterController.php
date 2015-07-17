@@ -32,7 +32,7 @@ class TwitterController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function getWorldTrends()
     {
 
         $url = 'https://api.twitter.com/1.1/trends/place.json';
@@ -49,6 +49,31 @@ class TwitterController extends Controller
         return response()
                     ->json(json_decode($response)[0])
                     ->header('Content-Type', 'application/json');
+
+    }
+
+    /**
+     * Display the Top 10 World Trends
+     *
+     * @return Response
+     */
+    public function index2()
+    {
+
+        $url = 'https://api.twitter.com/1.1/trends/place.json';
+        $getfield = '?id=1';
+        $requestMethod = 'GET';
+
+        $twitter = new TwitterAPIExchange($this->settings);
+        $response = $twitter->setGetfield($getfield)
+            ->buildOauth($url, $requestMethod)
+            ->performRequest();
+
+        Log::debug($response);
+
+        return response()
+            ->json(json_decode($response)[0])
+            ->header('Content-Type', 'application/json');
 
     }
 }

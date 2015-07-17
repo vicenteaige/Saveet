@@ -10,6 +10,7 @@ use Illuminate\Foundation\Auth\ResetsPasswords;
 
 use App\User;
 use App\Http\Requests;
+use Log;
 
 class PasswordController extends Controller
 {
@@ -39,17 +40,10 @@ class PasswordController extends Controller
     public function apiResetPassword(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'email'      => 'required|email',
+            'email'      => 'required|email|exists:users,email',
         ]);
         if ($validator->fails()) {
-            return response()->json([
-                [
-                    'header' => [
-                        'success' => 'no',
-                        'msg' => 'El formato del email no es correcto'
-                    ]
-                ]
-            ]);
+            return response()->api(400, 'no', 'Email does not exist, or has incorrect format','');
         }
     
         //comprovar si l'email es d'un usuari registrat
@@ -60,28 +54,25 @@ class PasswordController extends Controller
         //comprobar si el email se envia bien, y hacer que aparezca un mensaje tipo "El email se ha enviado", o de error en caso contrario
     }
 
-    public function apiChangePassword(Request $request)
+    public function store(Request $request)
     {
+        //Log::debug('Entro a la funcio apiChangePassword');
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
-            'password'  =>'required|string',
-            'password_confirmation' => 'required|string|same:password'
+            'email' => 'required|email|exists:users,email',
+            'password'  =>'required|string|confirmed',
+            'password_confirmation' => 'required|string'
         ]);
         if ($validator->fails()) {
-            return response()->json([
-                [
-                    'header' => [
-                        'success' => 'no',
-                        'msg' => 'Los passwords no son iguales, o algun formato es incorrecto'
-                    ]
-                ]
-            ]);
+            return response()->api(400, 'no', 'Passwords are not the same, email does not exist, or incorrect format', '');
         }
 
         $user =  User::where('email', $request->email);
         $user -> password = bcrypt($request->password);
+        $user -> updated_at = new \DateTime;
         $user -> save();
         
         //cambiar la contraseña del usuario
+
+        return response()->api(200, 'yes', '', '');
     }
 }
