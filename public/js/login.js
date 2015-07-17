@@ -33,16 +33,18 @@ angular.module ('login').factory(
         '$resource',
         function ($resource ) {
 
-            var resource = {}; //funcion pública
-            resource.items = [];
+            var resource = {};
+            //resource.items = [];
             var item = $resource ( '/v1/user/login', {}, {
-                sendData : { method : 'POST', isArray : true }
+                sendData : { method : 'POST', isArray : true },
+                //getData : { method : 'GET', isArray : true }
             });
 
             resource.sendData = function(sendEmail, sendPassword) {
                // alert(sendEmail + sendPassword);
                 item.sendData({email:sendEmail, password:sendPassword}).$promise.then( function( data ){
-                    console.log(data);
+                   console.log(data[0].header);
+
                     //angular.copy( data, resource.items);
                 });
             };
