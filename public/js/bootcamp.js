@@ -15,11 +15,24 @@ angular.module ('bootcamp').factory(
 				CrearTag : { method : 'POST', isArray : true }
 			});
 
-			resource.CrearTag = function(tag_nuevo) {
+			resource.CrearTag = function(tag_nuevo){
 				item.CrearTag({tag:tag_nuevo}).$promise.then( function( data ){
 					console.log(data);
 				});
 			};
+			
+			resource.EliminarTag = function(tag_a_borrar){
+				
+				var item2 = $resource ( 'v1/tag/' + tag_a_borrar, {}, {
+					//DELETE - destroy
+					EliminarTag : { method : 'DELETE', isArray : true }
+				});
+
+				item2.EliminarTag().$promise.then( function( data ){
+					console.log(data);
+				});
+			};
+
 			return resource;
 		}
 	]
@@ -43,11 +56,11 @@ angular.module ('bootcamp').factory(
 					angular.copy( data, resource.items);
 				});
 			};
+
 			return resource;
 		}
 	]
 );
-
 
 angular.module('bootcamp').controller(
 	'MainController',
@@ -77,20 +90,6 @@ angular.module('bootcamp').controller(
 );
 
 angular.module('bootcamp').controller(
-	'TagController',
-	[
-		'$scope',
-		'nombre_modelo',
-		function($scope,nombre_modelo){
-
-			$scope.envia = function(str_name){ 
-				nombre_modelo.CrearTag(str_name);
-			 };
-		}
-	]
-);
-
-angular.module('bootcamp').controller(
 	'MyCtrl',
 	[ 
 		'$scope',
@@ -110,8 +109,13 @@ angular.module('bootcamp').controller(
 	        $scope.envia = function(str_name){ 
 				nombre_modelo.CrearTag(str_name);
 			 };
+
+			$scope.elimina = function(str_name){ 
+				console.log('sa creat elimina' + str_name);
+				nombre_modelo.EliminarTag(str_name);
+
+			 };
+
 	    }
     ]
 );
-
-

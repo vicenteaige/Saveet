@@ -18,14 +18,29 @@ use TwitterAPIExchange;
 
 class TwitterController extends Controller
 {
-    // TODO move this to configuration
 
-    private $settings = array(
-        'consumer_key'              => "S6Nh2SWU2zBLkkdxX0vthJu9H",
-        'consumer_secret'           => "YN8KRgcQgcb5WHnENJ2m8azAKDlD0ISq3iODwd5EKjGa2w4mc6",
-        'oauth_access_token'        => "2830115382-NR19AHCRMPV0wq6p8yk5SRxCwIMLdhoRTb4SjDB",
-        'oauth_access_token_secret' => "aaPY6B8MlPdvDa3546MlE0pj69lm5GS4N3ZDTWGBb6NrS"
-    );
+    /**
+     * Generates a twitter auth settings array.
+     *
+     * @return Array of settings
+     */
+    private function getTwitterSettings(){
+        return array(
+            'consumer_key'              => env('TWITTER_CONSUMER_KEY'),
+            'consumer_secret'           => env('TWITTER_CONSUMER_SECRET'),
+            'oauth_access_token'        => env('TWITTER_OAUTH_ACCESS_TOKEN'),
+            'oauth_access_token_secret' => env('TWITTER_OAUTH_ACCESS_TOKEN_SECRET'),
+        );
+    }
+
+    /**
+     * Loads an array of valid woeid places
+     *
+     * @return Array of woeids
+     */
+    private function getPlaces(){
+
+    }
 
     /**
      * Display the Top 10 World Trends
@@ -35,11 +50,13 @@ class TwitterController extends Controller
     public function getWorldTrends()
     {
 
+        $env = env('APP_DEBUG');
+
         $url = 'https://api.twitter.com/1.1/trends/place.json';
         $getfield = '?id=1';
         $requestMethod = 'GET';
 
-        $twitter = new TwitterAPIExchange($this->settings);
+        $twitter = new TwitterAPIExchange($this->getTwitterSettings());
         $response = $twitter->setGetfield($getfield)
             ->buildOauth($url, $requestMethod)
             ->performRequest();
@@ -53,18 +70,20 @@ class TwitterController extends Controller
     }
 
     /**
-     * Display the Top 10 World Trends
+     * Display trends by location.
      *
      * @return Response
      */
-    public function index2()
+    public function getTrendsByLocation($woeid)
     {
 
         $url = 'https://api.twitter.com/1.1/trends/place.json';
-        $getfield = '?id=1';
+        $getfield = '?id='.$woeid;
         $requestMethod = 'GET';
 
-        $twitter = new TwitterAPIExchange($this->settings);
+        $test = str('sdsd');
+
+        $twitter = new TwitterAPIExchange($this->getTwitterSettings());
         $response = $twitter->setGetfield($getfield)
             ->buildOauth($url, $requestMethod)
             ->performRequest();
