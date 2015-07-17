@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use Auth;
-
-use Log;
 use Validator;
 use Illuminate\Http\Request;
-
+use App\User;
 use App\Http\Requests;
 
 class UserController extends Controller
@@ -37,9 +35,14 @@ class UserController extends Controller
      *
      * @return Response
      */
-    public function store()
+    public function store(Request $request)
     {
-        //
+        $newuser = new User();
+        $newuser->name = $request->name;
+        $newuser->email = $request->email;
+        $newuser->password = $request->password;
+        $newuser->save();
+
     }
 
     /**
@@ -86,12 +89,34 @@ class UserController extends Controller
         //
     }
 
+    public function apiRegisterUser(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name'       => 'required|string|unique:users',
+            'email'      => 'required|email',
+            'password'   => 'required|confirmed|string',
+            'password_confirmation' => 'required|string'
+        ]);
+        if($validator->fails()){
+            $outcome = 'no';
+            $error = 'Some field is wrong';
+        }
+        else {
+            $outcome = 'yes';
+            $error = '';
+        }
+        return response()->json(
+            [
+                'header' => [
+                    'success' => $outcome,
+                    'msg' => $error
+                ]
+            ]
+        );
+    }
+
     public function apiLogUser(Request $request)
     {
-
-        $logItem = 'loginReqAPI: '.$request->email.' '.$request->password;
-        Log::debug($logItem);
-
         $validator = Validator::make($request->all(), [
             'email'      => 'required|email',
             'password'   => 'required|string'
@@ -111,40 +136,30 @@ class UserController extends Controller
         $password = $request->password;
 
         if (Auth::attempt(['email' => $email, 'password' => $password])) {
+            $httpStatus = 200;
             $outcome = 'yes';
             $error = '';
         }
         else {
+            $httpStatus = 401;
             $outcome = 'no';
             $error = 'Wrong email and password combination';
         }
-        return response()->json([
-                [
-                    'header' => [
-                        'success' => $outcome,
-                        'msg' => $error
-                    ]
-                ]
-        ]);
+        return response()->api($httpStatus, $outcome, $error, '');
     }
 
     public function apiLogOutUser()
     {
         if (Auth::logout()) {
+            $httpStatus = 200;
             $outcome = 'yes';
             $error = '';
         }
         else {
+            $httpStatus = 400;
             $outcome = 'no';
             $error = 'No user to logout';
         }
-        return response()->json([
-                [
-                    'header' => [
-                        'success' => $outcome,
-                        'msg' => $error
-                    ]
-                ]
-        ]);
+        return response()->api($httpStatus, $outcome, $error, '');
     }
 }
