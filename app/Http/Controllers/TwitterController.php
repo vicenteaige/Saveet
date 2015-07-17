@@ -19,8 +19,42 @@ use TwitterAPIExchange;
 class TwitterController extends Controller
 {
 
+    # Public Methods
+
     /**
-     * Generates a twitter auth settings array.
+     * Displays the Top 10 World Trends
+     *
+     * @return Response
+     */
+    public function getWorldTrends()
+    {
+
+        return response()
+                    ->json(json_decode($this->requestWorldTrends()))
+                    ->header('Content-Type', 'application/json');
+    }
+
+    /**
+     * Displays the Top 10 woeid trends
+     *
+     * @return Response
+     */
+    public function getLocationTrends()
+    {
+        $locationTrends = [];
+        foreach ($this->getPlaces() as $city => $woeid) {
+            $locationTrends[] = $this->requestTrendsByLocation($woeid);
+        }
+
+        return response()
+            ->json($locationTrends)
+            ->header('Content-Type', 'application/json');
+    }
+
+    # Private Methods
+
+    /**
+     * Loads a twitter auth settings array.
      *
      * @return Array of settings
      */
@@ -34,32 +68,7 @@ class TwitterController extends Controller
     }
 
     /**
-     * Displays the Top 10 World Trends
-     *
-     * @return Response
-     */
-    public function getWorldTrends()
-    {
-
-        $url = 'https://api.twitter.com/1.1/trends/place.json';
-        $getfield = '?id=1';
-        $requestMethod = 'GET';
-
-        $twitter = new TwitterAPIExchange($this->getTwitterSettings());
-        $response = $twitter->setGetfield($getfield)
-            ->buildOauth($url, $requestMethod)
-            ->performRequest();
-
-        Log::debug($response);
-
-        return response()
-                    ->json(json_decode($response)[0])
-                    ->header('Content-Type', 'application/json');
-
-    }
-
-    /**
-     * Loads an array of locations and they woid identifier.
+     * Loads a key-value array of locations and they woeid identifier.
      *
      * @return Array of woeids
      */
@@ -69,36 +78,65 @@ class TwitterController extends Controller
             'madrid'    => 766273,
             'sevilla'   => 774508,
             'bilbao'    => 754542,
-            'donostia'  => 773418,
-            'corunha'   => 763246,
-            'leon'      => 765099,
-            'santander' => 773964
+            #'donostia'  => 773418, # No hay data
+            #'corunha'   => 763246, # No hay data
+            #'leon'      => 765099, # No hay data
+            #'santander' => 773964  # No hay data
         );
     }
 
     /**
-     * Displays top Top 10 trends by a given woid location.
+     * Returns the Top 10 World Trends
      *
-     * @return Response
+     * @return Array of Twitter Trends
      */
-    public function getTrendsByLocation($woeid)
+    private function requestWorldTrends()
     {
 
         $url = 'https://api.twitter.com/1.1/trends/place.json';
-        $getfield = '?id='.urldecode($woeid);
+        $getfield = '?id=1';
         $requestMethod = 'GET';
 
-
         $twitter = new TwitterAPIExchange($this->getTwitterSettings());
-        $response = $twitter->setGetfield($getfield)
+
+        $rsJsonString = $twitter->setGetfield($getfield)
             ->buildOauth($url, $requestMethod)
             ->performRequest();
 
-        Log::debug($response);
+        $rsArray = json_decode($rsJsonString, true);
 
-        return response()
-            ->json(json_decode($response)[0])
-            ->header('Content-Type', 'application/json');
+        if (!array_key_exists('errors', $rsArray)){
+            return $rsArray[0];
+        }
+
+        abort(500, "Twitter error: ".$rsJsonString);
+    }
+
+    /**
+     * Returns the Top 10 trends by a given $woeid location.
+     *
+     * @return Array of Twitter Trends
+     */
+    private function requestTrendsByLocation($woeid)
+    {
+
+        $url = 'https://api.twitter.com/1.1/trends/place.json';
+        $getfield = '?id='.urlencode($woeid);
+        $requestMethod = 'GET';
+
+        $twitter = new TwitterAPIExchange($this->getTwitterSettings());
+
+        $rsJsonString = $twitter->setGetfield($getfield)
+            ->buildOauth($url, $requestMethod)
+            ->performRequest();
+
+        $rsArray = json_decode($rsJsonString, true);
+
+        if (!array_key_exists('errors', $rsArray)){
+            return $rsArray[0];
+        }
+
+        abort(500, "Twitter error: ".$rsJsonString);
 
     }
 }

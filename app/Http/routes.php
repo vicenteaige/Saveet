@@ -69,12 +69,12 @@ Route::group(['prefix' => 'v1'], function () {
     // Hashtags related calls (requires an authentificated user)  //
     ////////////////////////////////////////////////////////////////
     Route::group(['middleware' => 'auth'], function() {
-        Route::resource('tags', '' /* 'TagController' */ );
+        //Route::resource('tags', '' /* 'TagController' */ );
     });
 
     Route::group(['prefix' => 'twitter'], function() {
         Route::get('/worldtrends', 'TwitterController@getWorldTrends');
-        Route::get('/location/{woid}', 'TwitterController@getTrendsByLocation');
+        Route::get('/locations', 'TwitterController@getLocationTrends');
     });
 
 });
