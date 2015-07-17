@@ -79,14 +79,11 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('', 'UserController@apiGetLoggedUser');
         Route::post('login', 'UserController@apiLogUser');
         Route::get('logout', 'UserController@apiLogoutUser');
-<<<<<<< HEAD
-        Route::post('register', function() {
-           //
-        });
+
         Route::post('password/reset', 'Auth\PasswordController@apiResetPassword');
-=======
+
         Route::resource('register', 'UserController');
->>>>>>> 36b8edf38aa4ab7acdc106f8d2ddde6155210b1c
+
     });
     ////////////////////////////////////////////////////////////////
     // Hashtags related calls (requires an authentificated user)  //
