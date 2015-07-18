@@ -93,8 +93,12 @@ Route::group(['prefix' => 'v1'], function () {
     });
 
     Route::group(['prefix' => 'twitter'], function() {
-        Route::get('/worldtrends', 'TwitterController@getWorldTrends');
-        Route::get('/locations', 'TwitterController@getLocationTrends');
+        Route::get('/targettrends', 'TwitterController@getTargetTrends');
+    });
+
+    Route::group(['prefix' => 'daemon'], function() {
+        Route::get('/reload', 'DaemonController@reloadDaemon');
+        Route::get('/stop', 'DaemonController@stopDaemon');
     });
 
 });

@@ -6,6 +6,7 @@ use Log;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 
+
 /*
  * Twitter Api Exchange
  * Ad "j7mbo/twitter-api-php": "dev-master" to your composer.json
@@ -19,40 +20,19 @@ class TwitterController extends Controller
 
     # Public Methods
 
-    /**
-     * Displays the Top 10 World Trends
-     *
-     * @return Response
-     */
-    public function getWorldTrends()
-    {
-        # Request twitter world trends and prepare response
-        $response['trends'] = $this->requestWorldTrends();
-
-        return response()
-                    ->json($response)
-                    ->header('Content-Type', 'application/json');
-    }
-
-    /**
-     * Displays the Top 10 woeid trends
-     *
-     * @return Response
-     */
-    public function getLocationTrends()
+    public function getTargetTrends()
     {
 
         $trends = [];
-
         foreach ($this->getPlaces() as $city => $woeid) {
             $trends = array_merge($trends, $this->requestTrendsByLocation($woeid));
         }
 
-        $response = array('trends' => $trends);
+        $response['trends'] = $trends;
 
         return response()
-                    ->json($response)
-                    ->header('Content-Type', 'application/json');
+            ->json($response)
+            ->header('Content-Type', 'application/json');
     }
 
     # Private Methods
@@ -78,6 +58,7 @@ class TwitterController extends Controller
      */
     private function getPlaces(){
         return array(
+            'worldwide' => 1,
             'barcelona' => 753692,
             'madrid'    => 766273,
             'sevilla'   => 774508,
@@ -87,37 +68,6 @@ class TwitterController extends Controller
             #'leon'      => 765099, # No hay data
             #'santander' => 773964  # No hay data
         );
-    }
-
-    /**
-     * Returns the Top 10 World Trends
-     *
-     * @return Array of Twitter Trends
-     * @throws \Exception
-     */
-    private function requestWorldTrends()
-    {
-
-        $url = 'https://api.twitter.com/1.1/trends/place.json';
-        $getfield = '?id=1';
-        $requestMethod = 'GET';
-
-        $twitter = new TwitterAPIExchange($this->getTwitterSettings());
-
-        $rsJsonString = $twitter->setGetfield($getfield)
-            ->buildOauth($url, $requestMethod)
-            ->performRequest();
-
-        $rsArray = json_decode($rsJsonString, true);
-
-        if (!array_key_exists('errors', $rsArray)){
-            $trends = [];
-            foreach ($rsArray[0]['trends'] as $trend)
-                $trends[] = $trend['name'];
-            return $trends;
-        }
-
-        abort(500, "Twitter error: ".$rsJsonString);
     }
 
     /**
