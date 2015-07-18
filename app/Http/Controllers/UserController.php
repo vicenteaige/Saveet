@@ -45,6 +45,7 @@ class UserController extends Controller
             'password_confirmation' => 'required|string'
         ]);
         if($validator->fails()){
+            //$httpStatus = 401;
             $outcome = 'no';
             $error = 'Some field is wrong';
         }
@@ -56,6 +57,7 @@ class UserController extends Controller
             $newuser->password = bcrypt($request->password);
             $newuser->save();
 
+            //$httpStatus = 200;
             $outcome = 'yes';
             $error = '';
         }

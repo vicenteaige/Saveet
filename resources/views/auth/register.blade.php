@@ -29,7 +29,15 @@
         <input type="password" id="password" ng-model="sendPassword" class="form-control no_radius bottom_less1" placeholder="Password" required>
         <label for="inputPasswordConfirmation" class="sr-only">Password</label>
         <input type="password" ng-model="sendPasswordConfirmation" id="password_confirmation" class="form-control no_radius_top bottom_plus10" placeholder="Password Confirmation" required>
+        <div ng-show="myValue" class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only">Error:</span>
+            @{{ error }}
+        </div>
         <button class="btn btn-lg btn-primary btn-block" ng-click="register($event, sendName, sendEmail, sendTwitterUserName, sendPassword, sendPasswordConfirmation, event)">Register</button>
+        <div id="signup">
+            <label><a href="login">Do you have an account? Sign In</a></label>
+        </div>
     </form>
 
 </div>
