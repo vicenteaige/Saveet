@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-
-
 use Log;
 use App\Http\Requests;
 use Illuminate\Http\Request;
+
 
 /*
  * Twitter Api Exchange
@@ -19,8 +18,27 @@ use TwitterAPIExchange;
 class TwitterController extends Controller
 {
 
+    # Public Methods
+
+    public function getTargetTrends()
+    {
+
+        $trends = [];
+        foreach ($this->getPlaces() as $city => $woeid) {
+            $trends = array_merge($trends, $this->requestTrendsByLocation($woeid));
+        }
+
+        $response['trends'] = $trends;
+
+        return response()
+            ->json($response)
+            ->header('Content-Type', 'application/json');
+    }
+
+    # Private Methods
+
     /**
-     * Generates a twitter auth settings array.
+     * Loads a twitter auth settings array.
      *
      * @return Array of settings
      */
@@ -34,71 +52,54 @@ class TwitterController extends Controller
     }
 
     /**
-     * Displays the Top 10 World Trends
-     *
-     * @return Response
-     */
-    public function getWorldTrends()
-    {
-
-        $url = 'https://api.twitter.com/1.1/trends/place.json';
-        $getfield = '?id=1';
-        $requestMethod = 'GET';
-
-        $twitter = new TwitterAPIExchange($this->getTwitterSettings());
-        $response = $twitter->setGetfield($getfield)
-            ->buildOauth($url, $requestMethod)
-            ->performRequest();
-
-        Log::debug($response);
-
-        return response()
-                    ->json(json_decode($response)[0])
-                    ->header('Content-Type', 'application/json');
-
-    }
-
-    /**
-     * Loads an array of locations and they woid identifier.
+     * Loads a key-value array of locations and they woeid identifier.
      *
      * @return Array of woeids
      */
     private function getPlaces(){
         return array(
+            'worldwide' => 1,
             'barcelona' => 753692,
             'madrid'    => 766273,
             'sevilla'   => 774508,
             'bilbao'    => 754542,
-            'donostia'  => 773418,
-            'corunha'   => 763246,
-            'leon'      => 765099,
-            'santander' => 773964
+            #'donostia'  => 773418, # No hay data
+            #'corunha'   => 763246, # No hay data
+            #'leon'      => 765099, # No hay data
+            #'santander' => 773964  # No hay data
         );
     }
 
     /**
-     * Displays top Top 10 trends by a given woid location.
+     * Returns the Top 10 trends by a given $woeid location.
      *
-     * @return Response
+     * @param $woeid
+     * @return Array of Twitter Trends
+     * @throws \Exception
      */
-    public function getTrendsByLocation($woeid)
+    private function requestTrendsByLocation($woeid)
     {
 
         $url = 'https://api.twitter.com/1.1/trends/place.json';
-        $getfield = '?id='.urldecode($woeid);
+        $getfield = '?id='.urlencode($woeid);
         $requestMethod = 'GET';
 
-
         $twitter = new TwitterAPIExchange($this->getTwitterSettings());
-        $response = $twitter->setGetfield($getfield)
+
+        $rsJsonString = $twitter->setGetfield($getfield)
             ->buildOauth($url, $requestMethod)
             ->performRequest();
 
-        Log::debug($response);
+        $rsArray = json_decode($rsJsonString, true);
 
-        return response()
-            ->json(json_decode($response)[0])
-            ->header('Content-Type', 'application/json');
+        if (!array_key_exists('errors', $rsArray)){
+            $trends = [];
+            foreach ($rsArray[0]['trends'] as $trend)
+                $trends[] = $trend['name'];
+            return $trends;
+        }
+
+        abort(500, "Twitter error: ".$rsJsonString);
 
     }
 }
