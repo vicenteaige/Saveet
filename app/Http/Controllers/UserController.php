@@ -47,7 +47,7 @@ class UserController extends Controller
         if($validator->fails()){
             //$httpStatus = 401;
             $outcome = 'no';
-            $error = 'Some field is wrong';
+            $error = $validator->errors()->all();
         }
         else {
             $newuser = new User();

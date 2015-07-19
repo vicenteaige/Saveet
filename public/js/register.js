@@ -35,8 +35,8 @@ angular.module ('register').factory(
                         $window.location.href = 'http://localhost:8080/login';
 
                     }else{
-                        //error message
-                        $scope.error = data.header.msg;
+                        //errors message
+                        $scope.errors = data.header.msg;
                         $scope.myValue = true;
                     }
                 });
