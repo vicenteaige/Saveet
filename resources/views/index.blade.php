@@ -45,7 +45,15 @@
     <body>
     <div class="container" ng-controller="LogoutController">
         <div class="jumbotron">
-            <h1>Home</h1>
+            @if (Auth::guest())
+                <h1>Welcome, you can see the statistics of the trending topics<br />
+                    and hashtags of interest.</h1>
+                <a href="/auth/login">Sign in</a><br />
+                <a href="/auth/register">Sign up</a><br />
+            @else
+                <h1>Welcome {{ Auth::user()->name }}, you can see the statistics of the trending topics<br />
+                and hashtags of interest.</h1>
+            @endif
         </div>
         <p><a href="" ng-click="logout()">Log out</a></p>
 
