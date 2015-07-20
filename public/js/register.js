@@ -29,16 +29,20 @@ angular.module ('register').factory(
             });
 
             resource.sendData = function($scope, sendName, sendEmail, sendTwitterUserName, sendPassword, sendPasswordConfirmation) {
-                item.sendData({name:sendName, email:sendEmail, twitter_username:sendTwitterUserName, password:sendPassword, password_confirmation:sendPasswordConfirmation}).$promise.then( function( data ){
-                    console.log(data.header);
-                    if (data.header.success == "yes"){
-                        $window.location.href = 'http://localhost:8080/login';
-
-                    }else{
-                        //errors message
-                        $scope.errors = data.header.msg;
+                item.sendData({name:sendName, email:sendEmail, twitter_username:sendTwitterUserName, password:sendPassword, password_confirmation:sendPasswordConfirmation}).$promise.then(
+                    //Success callback
+                    function( data ){
+                        console.log(data);
+                        if (data.header.success == "yes"){
+                            $window.location.href = 'http://localhost:8080/login';
+                        }
+                    },
+                    //Failure callback
+                    function (data){
+                        console.log(data);
+                        //error message
+                        $scope.errors = data.data.header.msg;
                         $scope.myValue = true;
-                    }
                 });
             };
             return resource;
