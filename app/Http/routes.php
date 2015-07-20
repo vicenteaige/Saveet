@@ -92,7 +92,7 @@ Route::group(['prefix' => 'v1'], function () {
     ////////////////////////////////////////////////////////////////
     // Hashtags related calls (requires an authentificated user)  //
     ////////////////////////////////////////////////////////////////
-    Route::resource('home','TagController');
+    Route::resource('tag','TagController');
     Route::delete('tag/{id}','TagController@destroy');
     
 

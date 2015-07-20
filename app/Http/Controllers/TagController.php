@@ -116,7 +116,7 @@ class TagController extends Controller
         $hashtag = Hashtag::where('name', $id)->firstOrFail();
         
         try {
-           //Añade Hashtag a la tabla hashtags mysql
+            //Eliminar tag de mysql
             $hashtag->delete();
             return response()->api(200,'yes', 'Success saving new hashtag', '');
         } catch (Exception $e) {
