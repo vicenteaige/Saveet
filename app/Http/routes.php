@@ -79,7 +79,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('register', function() {
            //
         });
-        Route::post('password/reset', 'Auth\PasswordController@apiResetPassword');
+        Route::resource('password/reset', 'Auth\PasswordController');
         Route::post('password/change', 'Auth\PasswordController@apiChangePassword');
         Route::resource('register', 'UserController');
     });
