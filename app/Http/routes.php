@@ -12,7 +12,9 @@
 
 Route::resource('v1/tag','TagController');
 
- Route::get('tags', function () {
+Route::delete('v1/tag/{id}','TagController@destroy');
+
+Route::get('tags', function () {
      return view('tags');
  });
 
@@ -74,27 +76,38 @@ Route::group(['prefix' => 'v1'], function () {
     // User related calls  //
     /////////////////////////
     Route::group(['prefix' => 'user'], function() {
+        Route::get('', 'UserController@apiGetLoggedUser');
         Route::post('login', 'UserController@apiLogUser');
         Route::get('logout', 'UserController@apiLogoutUser');
+
         Route::post('register', function() {
            //
         });
         Route::resource('password/reset', 'Auth\PasswordController');
         Route::post('password/change', 'Auth\PasswordController@apiChangePassword');
         Route::resource('register', 'UserController');
+
+        Route::post('password/reset', 'Auth\PasswordController@apiResetPassword');
+
+        Route::resource('register', 'UserController');
+
+
     });
     ////////////////////////////////////////////////////////////////
     // Hashtags related calls (requires an authentificated user)  //
     ////////////////////////////////////////////////////////////////
     Route::group(['middleware' => 'auth'], function() {
-        Route::resource('tags', '' /* 'TagController' */ );
+        //Route::resource('tags', '' /* 'TagController' */ );
     });
 
 
     Route::group(['prefix' => 'twitter'], function() {
-        Route::get('/worldtrends', 'TwitterController@getWorldTrends');
+        Route::get('/targettrends', 'TwitterController@getTargetTrends');
     });
 
-
+    Route::group(['prefix' => 'daemon'], function() {
+        Route::get('/reload', 'DaemonController@reloadDaemon');
+        Route::get('/stop', 'DaemonController@stopDaemon');
+    });
 
 });

@@ -45,8 +45,9 @@ class UserController extends Controller
             'password_confirmation' => 'required|string'
         ]);
         if($validator->fails()){
+            $httpStatus = 200;
             $outcome = 'no';
-            $error = 'Some field is wrong';
+            $error = $validator->errors()->all();
         }
         else {
             $newuser = new User();
@@ -56,17 +57,11 @@ class UserController extends Controller
             $newuser->password = bcrypt($request->password);
             $newuser->save();
 
+            $httpStatus = 200;
             $outcome = 'yes';
             $error = '';
         }
-        return response()->json(
-            [
-                'header' => [
-                    'success' => $outcome,
-                    'msg' => $error
-                ]
-            ]
-        );
+        return response()->api($httpStatus, $outcome, $error, '');
     }
 
     /**
@@ -120,14 +115,14 @@ class UserController extends Controller
             'password'   => 'required|string'
         ]);
         if ($validator->fails()) {
-            return response()->json([
+            return response()->json(
                 [
                     'header' => [
                         'success' => 'no',
                         'msg' => 'Invalid email or password format'
                     ]
                 ]
-            ]);
+            );
         }
 
         $email = $request->email;
@@ -148,16 +143,36 @@ class UserController extends Controller
 
     public function apiLogOutUser()
     {
-        if (Auth::logout()) {
-            $httpStatus = 200;
+        Auth::logout();
+        if (!Auth::check()) {
             $outcome = 'yes';
             $error = '';
         }
         else {
-            $httpStatus = 400;
+            $name = Auth::getUser()->name;
             $outcome = 'no';
-            $error = 'No user to logout';
+            $error = 'User: '.$name ;
         }
-        return response()->api($httpStatus, $outcome, $error, '');
+        return response()->json(
+            [
+                'header' => [
+                    'success' => $outcome,
+                    'msg' => $error
+                ]
+            ]
+        );
+    }
+
+    public function apiGetLoggedUser() {
+        $outcome = 'ok';
+        $message = Auth::getUser()->name;
+        return response()->json(
+            [
+                'header' => [
+                    'success' => $outcome,
+                    'msg' => $message
+                ]
+            ]
+        );
     }
 }
