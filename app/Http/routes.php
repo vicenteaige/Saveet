@@ -83,11 +83,12 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('register', function() {
            //
         });
-        Route::resource('password/reset', 'Auth\PasswordController');
-        Route::post('password/change', 'Auth\PasswordController@apiChangePassword');
-        Route::resource('register', 'UserController');
+        //Route::resource('password/reset', 'Auth\PasswordController');
+        //Route::resource('password/change', 'Auth\PasswordController');
+        //Route::post('password/change', 'Auth\PasswordController@store');
+        //Route::resource('register', 'UserController');
 
-        Route::post('password/reset', 'Auth\PasswordController@apiResetPassword');
+        Route::post('password/reset', 'Auth\PasswordController@store');
 
         Route::resource('register', 'UserController');
 

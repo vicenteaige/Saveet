@@ -54,7 +54,7 @@ class PasswordController extends Controller
         //comprobar si el email se envia bien, y hacer que aparezca un mensaje tipo "El email se ha enviado", o de error en caso contrario
     }
 
-    public function store(Request $request)
+    public function store(Request $request) 
     {
         //Log::debug('Entro a la funcio apiChangePassword');
         $validator = Validator::make($request->all(), [
@@ -66,10 +66,16 @@ class PasswordController extends Controller
             return response()->api(400, 'no', 'Passwords are not the same, email does not exist, or incorrect format', '');
         }
 
-        $user =  User::where('email', $request->email);
-        $user -> password = bcrypt($request->password);
+        $user = User::where('email', $request->email);
+
+        if(!$user){
+            return response()->api(400, 'no', 'No hay usuario', '');
+        }
+       /* $user -> password = bcrypt($request->password);
         $user -> updated_at = new \DateTime;
-        $user -> save();
+        $user -> save();*/
+
+        $user->update(['password' => bcrypt($request->password)]);
         
         //cambiar la contraseña del usuario
 
