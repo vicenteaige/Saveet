@@ -45,7 +45,7 @@ class UserController extends Controller
             'password_confirmation' => 'required|string'
         ]);
         if($validator->fails()){
-            //$httpStatus = 401;
+            $httpStatus = 200;
             $outcome = 'no';
             $error = $validator->errors()->all();
         }
@@ -57,18 +57,11 @@ class UserController extends Controller
             $newuser->password = bcrypt($request->password);
             $newuser->save();
 
-            //$httpStatus = 200;
+            $httpStatus = 200;
             $outcome = 'yes';
             $error = '';
         }
-        return response()->json(
-            [
-                'header' => [
-                    'success' => $outcome,
-                    'msg' => $error
-                ]
-            ]
-        );
+        return response()->api($httpStatus, $outcome, $error, '');
     }
 
     /**
