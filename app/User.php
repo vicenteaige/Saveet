@@ -40,6 +40,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     public function hashtags()
     {
-        return $this->belongsToMany('App\HashTag')->withTimestamps();
+        return $this->belongsToMany('App\Hashtag')->withTimestamps();
     }
 }
