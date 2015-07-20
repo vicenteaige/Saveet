@@ -15,7 +15,7 @@
         <!--ngTags-input-->
         <link rel="stylesheet" href="bower_components/ng-tags-input/ng-tags-input.min.css">  
 
-        <script type="application/javascript" src="/js/bootcamp.js"></script>
+        <script type="application/javascript" src="/js/tag.js"></script>
         <style>
             html, body {
                 height: 100%;

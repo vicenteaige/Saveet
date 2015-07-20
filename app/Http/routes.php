@@ -10,10 +10,6 @@
 |
 */
 
-Route::resource('v1/tag','TagController');
-
-Route::delete('v1/tag/{id}','TagController@destroy');
-
 Route::get('tags', function () {
      return view('tags');
  });
@@ -91,15 +87,13 @@ Route::group(['prefix' => 'v1'], function () {
 
         Route::resource('register', 'UserController');
 
-
     });
     ////////////////////////////////////////////////////////////////
     // Hashtags related calls (requires an authentificated user)  //
     ////////////////////////////////////////////////////////////////
-    Route::group(['middleware' => 'auth'], function() {
-        //Route::resource('tags', '' /* 'TagController' */ );
-    });
-
+    Route::resource('home','TagController');
+    Route::delete('tag/{id}','TagController@destroy');
+    
 
     Route::group(['prefix' => 'twitter'], function() {
         Route::get('/targettrends', 'TwitterController@getTargetTrends');

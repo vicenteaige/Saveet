@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class HashTag extends Model
+class Hashtag extends Model
 {
     protected $table = "hashtags";
 

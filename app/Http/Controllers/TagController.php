@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Validator;
 use Illuminate\Http\Request;
 use App\Hashtag;
+use App\User;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Log;
@@ -17,7 +18,6 @@ class TagController extends Controller
      */
     public function index()
     {
-
         $hashtags = Hashtag::all();
         
         $obj = array();
@@ -49,14 +49,8 @@ class TagController extends Controller
             'tag'      => 'required|unique:hashtags,name',
         ]);
         if ($validator->fails()) {
-            return response()->json([
-                [
-                    'header' => [
-                        'success' => 'no',
-                        'msg' => 'Error insert hashtag, repetido'
-                    ]
-                ]
-            ]);
+            //Formato de Macro respuesta JSON
+            return response()->api(400,'no', 'Error insert hashtag, repeated', '');
         }
 
         $tag = $req->input( 'tag' );
@@ -68,14 +62,11 @@ class TagController extends Controller
         //Añade Hashtag a la tabla hashtags mysql
         $hashtag->save();
 
-        return response()->json([
-                [
-                    'header' => [
-                        'success' => 'yes',
-                        'msg' => ''
-                    ]
-                ]
-        ]);
+        //$user = User::find($id);
+        //$user->hashtag()->attach($id); //this executes the insert-query
+
+        //Formato de Macro respuesta JSON
+        return response()->api(200,'yes', 'Success saving new hashtag', '');
     }
 
     /**
@@ -119,13 +110,20 @@ class TagController extends Controller
      */
     public function destroy($id)
     {
+
         Log::debug('tagcontroller destroy');
         //Eliminar tag de mysql
-        //$tag = $req->input( 'tag' );
         $hashtag = Hashtag::where('name', $id)->firstOrFail();
         
-        //Añade Hashtag a la tabla hashtags mysql
-        $hashtag->delete();
+        try {
+           //Añade Hashtag a la tabla hashtags mysql
+            $hashtag->delete();
+            return response()->api(200,'yes', 'Success saving new hashtag', '');
+        } catch (Exception $e) {
+            Log::error("Failed deleting the user hashtagh from hashtags");
+            Log::error($e->getMessage());
         
+            return response()->api(400,'no', 'Failed deleting hashtag', '');
+        }
     }
 }

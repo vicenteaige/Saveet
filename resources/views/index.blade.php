@@ -9,9 +9,17 @@
 
         <script src="/bower_components/angular/angular.js"></script>
         <script src="/bower_components/angular-resource/angular-resource.js"></script>
+
+        <!--ngTags-input - obligatoriamente tras angular-->
+        <script type="application/javascript" src="bower_components/ng-tags-input/ng-tags-input.js"></script>
+
         <script src="/bower_components/jquery/dist/jquery.js"></script>
         <script src="/bower_components/bootstrap/js/bootstrap.js"></script>
         <link rel="stylesheet" href="/bower_components/bootstrap/css/bootstrap.css" type="text/css">
+        <!--ngTags-input-->
+        <link rel="stylesheet" href="bower_components/ng-tags-input/ng-tags-input.min.css">  
+
+        <script type="application/javascript" src="/js/tag.js"></script>
         <script src="/js/logout.js"></script>
         <style>
             html, body {
@@ -53,11 +61,21 @@
             @else
                 <h1>Welcome {{ Auth::user()->name }}, you can see the statistics of the trending topics<br />
                 and hashtags of interest.</h1>
+
+                
+                    
             @endif
         </div>
         <p><a href="" ng-click="logout()">Log out</a></p>
 
     </div>
+    <div class="content" ng-app="bootcamp" ng-controller="MyCtrl" >  
+
+                        <h1>Hashtags de usuario:</h1>
+                        <tags-input ng-model="tags" on-tag-added="envia ( $tag.text )" on-tag-removed="elimina ( $tag.text )" >
+                            <auto-complete source="loadTags($query)"></auto-complete>
+                        </tags-input>
+                </div>
     </body>
 </html>
 

@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateHashTagsTable extends Migration
+class CreateHashtagsTable extends Migration
 {
     /**
      * Run the migrations.
