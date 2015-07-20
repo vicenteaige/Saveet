@@ -80,9 +80,6 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('login', 'UserController@apiLogUser');
         Route::get('logout', 'UserController@apiLogoutUser');
 
-        Route::post('register', function() {
-           //
-        });
         //Route::resource('password/reset', 'Auth\PasswordController');
         //Route::resource('password/change', 'Auth\PasswordController');
         //Route::post('password/change', 'Auth\PasswordController@store');

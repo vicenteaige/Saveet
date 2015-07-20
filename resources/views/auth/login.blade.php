@@ -27,7 +27,7 @@
             <label>
                 <input type="checkbox" ng-model="remember" value="remember-me"> Remember me
             </label>
-            <label><a href="">Forgot your password?</a></label>
+            <label><a href="../password/email">Forgot your password?</a></label>
         </div>
         <div ng-show="myValue" class="alert alert-danger" role="alert">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>

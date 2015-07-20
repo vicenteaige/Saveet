@@ -144,14 +144,17 @@ class UserController extends Controller
     {
         Auth::logout();
         if (!Auth::check()) {
+            $httpStatus = 200;
             $outcome = 'yes';
             $error = '';
         }
         else {
+            $httpStatus = 200;
             $name = Auth::getUser()->name;
             $outcome = 'no';
             $error = 'User: '.$name ;
         }
+        /*
         return response()->json(
             [
                 'header' => [
@@ -159,7 +162,8 @@ class UserController extends Controller
                     'msg' => $error
                 ]
             ]
-        );
+        );*/
+        return response()->api($httpStatus, $outcome, $error, '');
     }
 
     public function apiGetLoggedUser() {
