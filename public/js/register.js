@@ -43,7 +43,7 @@ angular.module ('register').factory(
                         //error message
                         $scope.errors = data.data.header.msg;
                         $scope.myValue = true;
-                });
+                    });
             };
             return resource;
         }

@@ -53,7 +53,7 @@ class UserController extends Controller
             $newuser = new User();
             $newuser->name = $request->name;
             $newuser->email = $request->email;
-            $newuser->twitter_username = $request->twitter_username;
+            $newuser->twitter_username = !(is_null($request->twitter_username)) ? $request->twitter_username : "";
             $newuser->password = bcrypt($request->password);
             $newuser->save();
 
@@ -112,7 +112,8 @@ class UserController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'email'      => 'required|email',
-            'password'   => 'required|string'
+            'password'   => 'required|string',
+            'remember'   => 'boolean'
         ]);
         if ($validator->fails()) {
             $httpStatus = 401;
@@ -124,8 +125,9 @@ class UserController extends Controller
 
         $email = $request->email;
         $password = $request->password;
+        $remember = $request->remember;
 
-        if (Auth::attempt(['email' => $email, 'password' => $password])) {
+        if (Auth::attempt(['email' => $email, 'password' => $password], $remember)) {
             $httpStatus = 200;
             $outcome = 'yes';
             $error = '';
