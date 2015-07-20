@@ -111,3 +111,10 @@ Route::group(['prefix' => 'v1'], function () {
     });
 
 });
+
+
+///////////////////////
+// CSRF Protection  //
+//////////////////////
+Route::when('*', 'csrf', array('post', 'put', 'delete'));
+
