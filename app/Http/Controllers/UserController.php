@@ -45,7 +45,7 @@ class UserController extends Controller
             'password_confirmation' => 'required|string'
         ]);
         if($validator->fails()){
-            $httpStatus = 200;
+            $httpStatus = 400;
             $outcome = 'no';
             $error = $validator->errors()->all();
         }
@@ -53,7 +53,7 @@ class UserController extends Controller
             $newuser = new User();
             $newuser->name = $request->name;
             $newuser->email = $request->email;
-            $newuser->twitter_username = $request->twitter_username;
+            $newuser->twitter_username = !(is_null($request->twitter_username)) ? $request->twitter_username : "";
             $newuser->password = bcrypt($request->password);
             $newuser->save();
 
@@ -112,23 +112,22 @@ class UserController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'email'      => 'required|email',
-            'password'   => 'required|string'
+            'password'   => 'required|string',
+            'remember'   => 'boolean'
         ]);
         if ($validator->fails()) {
-            return response()->json(
-                [
-                    'header' => [
-                        'success' => 'no',
-                        'msg' => 'Invalid email or password format'
-                    ]
-                ]
-            );
+            $httpStatus = 401;
+            $outcome = 'no';
+            $error = 'Wrong email and password combination';
+
+            return response()->api($httpStatus, $outcome, $error, '');
         }
 
         $email = $request->email;
         $password = $request->password;
+        $remember = $request->remember;
 
-        if (Auth::attempt(['email' => $email, 'password' => $password])) {
+        if (Auth::attempt(['email' => $email, 'password' => $password], $remember)) {
             $httpStatus = 200;
             $outcome = 'yes';
             $error = '';
