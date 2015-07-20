@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html ng-app="logout" xmlns="http://www.w3.org/1999/html">
+<html ng-app="logout, bootcamp" xmlns="http://www.w3.org/1999/html">
 
     <head>
         <title>Laravel</title>
@@ -69,7 +69,7 @@
         <p><a href="" ng-click="logout()">Log out</a></p>
 
     </div>
-    <div class="content" ng-app="bootcamp" ng-controller="MyCtrl" >  
+    <div class="content" ng-controller="MyCtrl" >  
 
                         <h1>Hashtags de usuario:</h1>
                         <tags-input ng-model="tags" on-tag-added="envia ( $tag.text )" on-tag-removed="elimina ( $tag.text )" >
