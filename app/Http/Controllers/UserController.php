@@ -45,7 +45,7 @@ class UserController extends Controller
             'password_confirmation' => 'required|string'
         ]);
         if($validator->fails()){
-            $httpStatus = 200;
+            $httpStatus = 400;
             $outcome = 'no';
             $error = $validator->errors()->all();
         }
