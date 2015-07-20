@@ -34,7 +34,7 @@
             <span class="sr-only">Error:</span>
             @{{ error }}
         </div>
-        <button class="btn btn-lg btn-primary btn-block"  ng-click="login($event, sendEmail, sendPassword)">Sign in</button>
+        <button class="btn btn-lg btn-primary btn-block"  ng-click="login($event, sendEmail, sendPassword, remember)">Sign in</button>
         <div id="signup">
             <label><a href="register">Don't have an account? Sign Up</a></label>
         </div>
