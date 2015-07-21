@@ -8,8 +8,8 @@ angular.module('register').controller(
         'RegisterModel',
         //function($event, $scope, RegisterModel){
         function($scope, RegisterModel){
-            $scope.register = function(event, sendName, sendEmail, sendTwitterUserName, sendPassword, sendPasswordConfirmation){
-                RegisterModel.sendData($scope, sendName, sendEmail, sendTwitterUserName, sendPassword, sendPasswordConfirmation);
+            $scope.register = function(event, sendName, sendEmail, sendTwitterUserName, sendPassword, sendPasswordConfirmation, _token){
+                RegisterModel.sendData($scope, sendName, sendEmail, sendTwitterUserName, sendPassword, sendPasswordConfirmation, _token);
                 event.preventDefault();
             };
         }
@@ -28,8 +28,8 @@ angular.module ('register').factory(
                 sendData : { method : 'POST', isArray : false }
             });
 
-            resource.sendData = function($scope, sendName, sendEmail, sendTwitterUserName, sendPassword, sendPasswordConfirmation) {
-                item.sendData({name:sendName, email:sendEmail, twitter_username:sendTwitterUserName, password:sendPassword, password_confirmation:sendPasswordConfirmation}).$promise.then(
+            resource.sendData = function($scope, sendName, sendEmail, sendTwitterUserName, sendPassword, sendPasswordConfirmation, _token) {
+                item.sendData({name:sendName, email:sendEmail, twitter_username:sendTwitterUserName, password:sendPassword, password_confirmation:sendPasswordConfirmation, _token:_token}).$promise.then(
                     //Success callback
                     function( data ){
                         console.log(data);

@@ -108,15 +108,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('/stop', 'DaemonController@stopDaemon');
     });
 
-    ///////////////////////
-    // CSRF Protection  //
-    //////////////////////
-    Route::when('*', 'csrf', ['post', 'put', 'patch', 'delete']);
 
-    Route::post('register', array('before' => 'csrf', function()
-    {
-        return 'You gave a valid CSRF token!';
-    }));
 
 });
 

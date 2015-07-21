@@ -6,9 +6,9 @@ angular.module('login').controller(
         '$scope',
         'LoginModel',
         function($scope, LoginModel){
-            $scope.login = function(event, sendEmail, sendPassword, remember){
+            $scope.login = function(event, sendEmail, sendPassword, remember, _token){
                 //alert(sendEmail + sendPassword);
-                LoginModel.sendData($scope, sendEmail, sendPassword, remember);
+                LoginModel.sendData($scope, sendEmail, sendPassword, remember, _token);
                 event.preventDefault();
 
             };
@@ -29,13 +29,13 @@ angular.module ('login').factory(
                 sendData : { method : 'POST', isArray : false }
             });
 
-            resource.sendData = function($scope, sendEmail, sendPassword, remember) {
-                item.sendData({email:sendEmail, password:sendPassword, remember:remember}).$promise.then(
+            resource.sendData = function($scope, sendEmail, sendPassword, remember, _token) {
+                item.sendData({email:sendEmail, password:sendPassword, remember:remember, _token:_token}).$promise.then(
                     //Success callback
                     function( data ){
                         console.log(data);
                         if (data.header.success == "yes"){
-                            $window.location.href = 'home';
+                            $window.location.href = 'http://localhost:8080/home';
                         }
                     },
                     //Failure callback
