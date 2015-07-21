@@ -17,7 +17,9 @@
 <div class="container" ng-controller="MainController">
 
     <form class="form-signin" method="POST" action="/auth/register">
-        {!! csrf_field() !!}
+
+        <input type="hidden" ng-model="_token" value="<?php echo csrf_token(); ?>">
+
         <h2 class="form-signin-heading">Please Sign Up</h2>
         <label for="inputName" class="sr-only">Name</label>
         <input type="text" ng-model="sendName" value="{{ old('name') }}" id="name" class="form-control no_radius_bottom bottom_less1" placeholder="Enter your name" required autofocus>
@@ -36,7 +38,7 @@
                 @{{error}}
             </div>
         </div>
-        <button class="btn btn-lg btn-primary btn-block" ng-click="register($event, sendName, sendEmail, sendTwitterUserName, sendPassword, sendPasswordConfirmation, event)">Register</button>
+        <button class="btn btn-lg btn-primary btn-block" ng-click="register($event, sendName, sendEmail, sendTwitterUserName, sendPassword, sendPasswordConfirmation, event, _token)">Register</button>
         <div id="signup">
             <label><a href="login">Do you have an account? Sign In</a></label>
         </div>

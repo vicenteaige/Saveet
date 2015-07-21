@@ -109,11 +109,9 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('/stop', 'DaemonController@stopDaemon');
     });
 
+
+
 });
 
 
-///////////////////////
-// CSRF Protection  //
-//////////////////////
-Route::when('*', 'csrf', array('post', 'put', 'delete'));
 

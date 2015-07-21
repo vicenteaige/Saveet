@@ -13,6 +13,7 @@
         <script src="/bower_components/bootstrap/js/bootstrap.js"></script>
         <link rel="stylesheet" href="/bower_components/bootstrap/css/bootstrap.css" type="text/css">
         <script src="/js/logout.js"></script>
+        <!--
         <style>
             html, body {
                 height: 100%;
@@ -41,6 +42,7 @@
                 font-size: 96px;
             }
         </style>
+        -->
     </head>
     <body>
     <div class="container" ng-controller="LogoutController">
