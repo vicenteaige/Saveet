@@ -8,8 +8,10 @@ angular.module('reset').controller(
         'ResetModel',
         //function($scope, ResetModel, $event){
         function($scope, ResetModel){
-            $scope.reset = function(sendEmail, sendPassword, sendPasswordConfirmation){
-                ResetModel.sendData(sendEmail, sendPassword, sendPasswordConfirmation);
+            $scope.reset = function(sendPassword, sendPasswordConfirmation){
+                var pathArray = window.location.pathname.split( '/' ); 
+                var token = pathArray[3];
+                ResetModel.sendData(sendPassword, sendPasswordConfirmation, token);
                
             };
             //$event.preventDefault();
@@ -23,16 +25,13 @@ angular.module ('reset').factory(
         '$resource',
         '$window',
         function ($resource, $window ) {
-
             var resource = {};
             var item = $resource ( '/v1/user/password/reset', {}, {
                 sendData : { method : 'POST', isArray : false }
             });
 
-
-
-            resource.sendData = function(sendEmail, sendPassword, sendPasswordConfirmation) {
-                item.sendData({email:sendEmail, password:sendPassword, password_confirmation:sendPasswordConfirmation}).$promise.then( 
+            resource.sendData = function(sendPassword, sendPasswordConfirmation, token) {
+                item.sendData({password:sendPassword, password_confirmation:sendPasswordConfirmation, token:token}).$promise.then( 
                     function( data ){
                         console.log(data);
                         if(data.header.success== "yes"){
