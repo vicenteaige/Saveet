@@ -80,6 +80,8 @@ Route::group(['prefix' => 'v1'], function () {
 
         Route::resource('register', 'UserController');
 
+        Route::post('activate', 'ActivateController@store');
+
     });
     ////////////////////////////////////////////////////////////////
     // Hashtags related calls (requires an authentificated user)  //

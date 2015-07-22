@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Http\Requests;
 use Hash;
+use Mail;
 
 class UserController extends Controller
 {
@@ -58,6 +59,11 @@ class UserController extends Controller
             $newuser->twitter_username = !(is_null($request->twitter_username)) ? $request->twitter_username : "";
             $newuser->password = bcrypt($request->password);
             $newuser->save();
+
+            Mail::send('emails.activate', ['user' => $newuser], function ($message) use ($newuser) {
+                $message->subject("Welcome, activate your account in Saveet");
+                $message->to($newuser->email);
+            });
 
             $httpStatus = 200;
             $outcome = 'yes';

@@ -34,7 +34,7 @@ angular.module ('register').factory(
                     function( data ){
                         console.log(data);
                         if (data.header.success == "yes"){
-                            $window.location.href = 'http://localhost:8080/login';
+                            $window.location.href = 'login';
                         }
                     },
                     //Failure callback

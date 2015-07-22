@@ -35,7 +35,7 @@ angular.module ('login').factory(
                     function( data ){
                         console.log(data);
                         if (data.header.success == "yes"){
-                            $window.location.href = 'http://bootcamp.incubio.com/home';
+                            $window.location.href = 'home';
                         }
                     },
                     //Failure callback
