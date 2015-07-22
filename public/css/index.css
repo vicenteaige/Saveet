@@ -7,6 +7,11 @@ body {
   text-align: center;
 }
 
+.navbar-brand {
+  padding: 2px 15px;
+
+}
+
 .navbar-default {
   background-color: #337ab7;
   border-color: #2d6ba1;

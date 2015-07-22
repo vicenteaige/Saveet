@@ -26,7 +26,7 @@ return [
     |
     */
 
-    'url' => 'http://localhost:8080',
+    'url' => env('APP_URL', 'http://bootcamp.incubio.com/'),
 
     /*
     |--------------------------------------------------------------------------
@@ -153,6 +153,11 @@ return [
         // Laravel IDE Helper
         //
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+
+        //
+        // MongoDB ORM plugin
+        //
+        Jenssegers\Mongodb\MongodbServiceProvider::class,
 
     ],
 

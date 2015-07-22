@@ -40,7 +40,7 @@
         </div>
         <button class="btn btn-lg btn-primary btn-block" ng-click="register($event, sendName, sendEmail, sendTwitterUserName, sendPassword, sendPasswordConfirmation, event, _token)">Register</button>
         <div id="signup">
-            <label><a href="login">Do you have an account? Sign In</a></label>
+            <label><a href="{{Config::get('app.url')}}login">Do you have an account? Sign In</a></label>
         </div>
     </form>
 
