@@ -86,7 +86,7 @@ Route::group(['prefix' => 'v1'], function () {
         //Route::resource('register', 'UserController');
 
         Route::post('password/reset', 'Auth\PasswordController@store');
-        Route::post('password/email', 'Auth\PasswordController@apiresetPassword');
+        Route::post('password/email', 'Auth\PasswordController@apiResetPassword');
 
         Route::resource('register', 'UserController');
 
