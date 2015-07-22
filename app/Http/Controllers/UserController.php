@@ -7,7 +7,6 @@ use Validator;
 use Illuminate\Http\Request;
 use App\User;
 use App\Http\Requests;
-use Hash;
 use Mail;
 
 class UserController extends Controller
@@ -55,7 +54,7 @@ class UserController extends Controller
             $newuser = new User();
             $newuser->name = $request->name;
             $newuser->email = $request->email;
-            $newuser->activateToken = Hash::make($request->email);
+            $newuser->activateToken = bcrypt($request->email);
             $newuser->twitter_username = !(is_null($request->twitter_username)) ? $request->twitter_username : "";
             $newuser->password = bcrypt($request->password);
             $newuser->save();

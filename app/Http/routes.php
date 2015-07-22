@@ -57,6 +57,7 @@ Route::post('password/email', 'Auth\PasswordController@postEmail');
 // Password reset routes...
 Route::get('password/reset/{token}', 'Auth\PasswordController@getReset');
 Route::post('password/reset', 'Auth\PasswordController@postReset');
+Route::get('activate/{token}', 'ActivateController@store');
 
 //////////////////
 // v1 API calls //
@@ -79,8 +80,6 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('password/email', 'Auth\PasswordController@apiResetPassword');
 
         Route::resource('register', 'UserController');
-
-        Route::post('activate', 'ActivateController@store');
 
     });
     ////////////////////////////////////////////////////////////////
