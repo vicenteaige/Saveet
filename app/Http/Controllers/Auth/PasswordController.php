@@ -11,6 +11,7 @@ use Illuminate\Foundation\Auth\ResetsPasswords;
 use App\User;
 use App\Http\Requests;
 use Log;
+use DB;
 
 class PasswordController extends Controller
 {
@@ -58,26 +59,26 @@ class PasswordController extends Controller
     {
         //Log::debug('Entro a la funcio apiChangePassword');
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email|exists:users,email',
+            //'email' => 'required|email|exists:users,email',
             'password'  =>'required|string|confirmed',
             'password_confirmation' => 'required|string'
+            'token'=>'required'
         ]);
         if ($validator->fails()) {
             return response()->api(400, 'no', 'Passwords are not the same, email does not exist, or incorrect format', '');
         }
 
-        $user = User::where('email', $request->email);
+        $userEmail = DB::table('password_resets')->where('token', '=', $request->token)->value('email');
+
+
+        $user = User::where('email', '=', $userEmail);
+
 
         if(!$user){
             return response()->api(400, 'no', 'No hay usuario', '');
         }
-       /* $user -> password = bcrypt($request->password);
-        $user -> updated_at = new \DateTime;
-        $user -> save();*/
 
         $user->update(['password' => bcrypt($request->password)]);
-        
-        //cambiar la contraseña del usuario
 
         return response()->api(200, 'yes', '', '');
     }
