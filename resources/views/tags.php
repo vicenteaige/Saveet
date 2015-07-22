@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="bootcamp">
+<html ng-app="usertags">
     <head>
         <title>Laravel</title>
 
@@ -48,7 +48,7 @@
     </head>
     <body>
         <div class="container">
-            <div class="content" ng-controller="MyCtrl" >
+            <div class="content" ng-controller="HashtagController" >
                 <div class="title">Sesión iniciada</div>
                 
                 <!--<input type="text" ng-model="name">
@@ -68,7 +68,7 @@
                     </section>
                 </div>
 
-<!--               <div ng-controller="MainController">
+              <div ng-controller="MainController">
                     <section>
                         <article ng-repeat="item in items">
                             <h1>{{item.name}}</h1>

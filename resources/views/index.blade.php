@@ -12,20 +12,19 @@
 
         <!--ngTags-input - obligatoriamente tras angular-->
         <script type="application/javascript" src="bower_components/ng-tags-input/ng-tags-input.js"></script>
+        <link rel="stylesheet" href="bower_components/ng-tags-input/ng-tags-input.min.css">  
 
         <script src="/bower_components/jquery/dist/jquery.js"></script>
         <script src="/bower_components/bootstrap/js/bootstrap.js"></script>
         <link rel="stylesheet" href="/bower_components/bootstrap/css/bootstrap.css" type="text/css">
-
+       
         <script type="application/javascript" src="/js/logout.js"></script>
         <script type="application/javascript" src="/js/tag.js"></script>
-
-        <script>var rootApp = angular.module('rootApp', ['usertags','logout'])</script>
-
         <link rel="stylesheet" href="/css/index.css">
-        <!--
+        
+        <script>var rootApp = angular.module('rootApp', ['logout','usertags'])</script>
 
-        <style>
+      <!--  <style>
             html, body {
                 height: 100%;
             }
@@ -52,12 +51,12 @@
             .title {
                 font-size: 96px;
             }
-        </style>
-        -->
+        </style>-->
+        
     </head>
 
     <body ng-app="rootApp">
-   <div class="container">
+
 
 
     <!--<div class="container" ng-controller="LogoutController">
@@ -90,7 +89,7 @@
     </div>-->
 
     <nav class="navbar navbar-default navbar-fixed-top">
-        <div class="container" ng-controller="LogoutController">
+        <div class="container" ng-app="logout" ng-controller="LogoutController">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                     <span class="sr-only">Toggle navigation</span>
@@ -127,8 +126,13 @@
         <div class="starter-template">
             <h1>Welcome, {{ Auth::user()->name }}</h1>
             <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>
+            <div class="content" ng-app="usertags" ng-controller="HashtagController" >
+                    <h1>Hashtags de usuario:</h1>
+                    <tags-input ng-model="tags" on-tag-added="envia ( $tag.text )" on-tag-removed="elimina ( $tag.text )" >
+                        <auto-complete source="loadTags($query)"></auto-complete>
+                    </tags-input>
+            </div>
         </div>
-
     </div><!-- /.container -->
     </body>
 </html>
