@@ -34,7 +34,7 @@
     <form class="form-signin" method="POST" action="/password/email">
 
         <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-        
+
         <h2 class="form-signin-heading">Password reset</h2>
         <p>Forgot your password? Send a link to your mail to reset it.</p>
         <label for="inputEmail" class="sr-only">Email address</label>
