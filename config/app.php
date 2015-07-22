@@ -154,6 +154,11 @@ return [
         //
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
 
+        //
+        // MongoDB ORM plugin
+        //
+        Jenssegers\Mongodb\MongodbServiceProvider::class,
+
     ],
 
     /*

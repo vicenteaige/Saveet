@@ -18,8 +18,13 @@ Route::get('tags', function () {
 // Home //
 //////////
 
-Route::get('/', function () {
-    return view('index');
+Route::group(['middleware' => 'auth'], function() {
+    Route::get('/', function () {
+        return view('index');
+    });
+    Route::get('home', function(){
+        return view('index');
+    });
 });
 
 //Register
@@ -30,12 +35,6 @@ Route::get('register', function(){
 //Login
 Route::get('login', function(){
     return view('auth/login');
-});
-
-Route::group(['middleware' => 'auth'], function() {
-    Route::get('home', function(){
-        return view('index');
-    });
 });
 
 Route::get('password/email', function(){
