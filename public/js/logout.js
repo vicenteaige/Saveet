@@ -32,7 +32,7 @@ angular.module ('logout').factory(
                 item.sendData().$promise.then( function( data ){
                     console.log(data.header);
                     if (data.header.success == "yes"){
-                        $window.location.href = 'http://localhost:8080/home';
+                        $window.location.href = 'http://bootcamp.incubio.com/home';
                         console.log("you are logout");
 
                     }else{
