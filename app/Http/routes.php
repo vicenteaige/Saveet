@@ -100,7 +100,7 @@ Route::group(['prefix' => 'v1'], function () {
     });
 
     Route::group(['prefix' => 'daemon'], function() {
-        Route::get('/reload', 'DaemonController@reloadDaemon');
+        Route::get('/update', 'DaemonController@updateTrends');
         Route::get('/stop', 'DaemonController@stopDaemon');
     });
 

@@ -34,11 +34,11 @@ class DaemonController extends Controller
      *
      * @return Response
      */
-    public function reloadDaemon(){
+    public function updateTrends(){
 
         $redis = new Redis();
         $redis->connect('localhost', 6379);
-        $redis->publish('daemon-notify', 'reload');
+        $redis->publish('daemon-notify', json_encode(array('barcelona')));
 
         $response = array('success' => true);
         return response()
