@@ -75,15 +75,13 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('login', 'UserController@apiLogUser');
         Route::get('logout', 'UserController@apiLogoutUser');
 
-        Route::post('register', function() {
-           //
-        });
         //Route::resource('password/reset', 'Auth\PasswordController');
         //Route::resource('password/change', 'Auth\PasswordController');
         //Route::post('password/change', 'Auth\PasswordController@store');
         //Route::resource('register', 'UserController');
 
         Route::post('password/reset', 'Auth\PasswordController@store');
+        Route::post('password/email', 'Auth\PasswordController@apiResetPassword');
 
         Route::resource('register', 'UserController');
 
@@ -106,11 +104,9 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('/stop', 'DaemonController@stopDaemon');
     });
 
+
+
 });
 
 
-///////////////////////
-// CSRF Protection  //
-//////////////////////
-Route::when('*', 'csrf', array('post', 'put', 'delete'));
 

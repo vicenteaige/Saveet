@@ -12,7 +12,7 @@ use Redis;
 class DaemonController extends Controller
 {
     /**
-     * Publishes a 'stop' event to Redis Pub/Sub 'daemon' channel
+     * Publishes a 'stop' event to Redis Pub/Sub 'daemon-notify' channel
      *
      * @return Response
      */
@@ -30,7 +30,7 @@ class DaemonController extends Controller
     }
 
     /**
-     * Publishes a 'reload' event to Redis Pub/Sub 'daemon' channel
+     * Publishes a 'reload' event to Redis Pub/Sub 'daemon-notify' channel
      *
      * @return Response
      */

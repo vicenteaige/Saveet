@@ -16,8 +16,10 @@
 
 <div class="container" ng-controller="MainController">
 
-    <form class="form-signin" method="POST" action="/auth/login">
-        {!! csrf_field() !!}
+    <form class="form-signin" method="POST" action="">
+
+        <input type="hidden" ng-model="_token" value="<?php echo csrf_token(); ?>">
+
         <h2 class="form-signin-heading">Please sign in</h2>
         <label for="inputEmail" class="sr-only">Email address</label>
         <input type="email" ng-model="sendEmail" value="{{ old('email') }}" id="inputEmail" class="form-control no_radius_bottom bottom_less1" placeholder="Email address" required autofocus>
@@ -27,14 +29,14 @@
             <label>
                 <input type="checkbox" ng-model="remember" value="remember-me"> Remember me
             </label>
-            <label><a href="">Forgot your password?</a></label>
+            <label><a href="../password/email">Forgot your password?</a></label>
         </div>
         <div ng-show="myValue" class="alert alert-danger" role="alert">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
             <span class="sr-only">Error:</span>
             @{{ error }}
         </div>
-        <button class="btn btn-lg btn-primary btn-block"  ng-click="login($event, sendEmail, sendPassword, remember)">Sign in</button>
+        <button class="btn btn-lg btn-primary btn-block"  ng-click="login($event, sendEmail, sendPassword, remember, _token)">Sign in</button>
         <div id="signup">
             <label><a href="register">Don't have an account? Sign Up</a></label>
         </div>
