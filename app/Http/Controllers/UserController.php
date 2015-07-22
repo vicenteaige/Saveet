@@ -164,7 +164,7 @@ class UserController extends Controller
 
     public function apiGetLoggedUser() {
         $outcome = 'ok';
-        $message = Auth::getUser()->id;
+        $message = Auth::user()->id;
         return response()->json(
             [
                 'header' => [

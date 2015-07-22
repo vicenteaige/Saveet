@@ -14,7 +14,6 @@ Route::get('tags', function () {
      return view('tags');
  });
 
-
 //////////
 // Home //
 //////////
@@ -95,6 +94,8 @@ Route::group(['prefix' => 'v1'], function () {
     Route::resource('tag','TagController');
     Route::delete('tag/{id}','TagController@destroy');
     
+
+
 
     Route::group(['prefix' => 'twitter'], function() {
         Route::get('/targettrends', 'TwitterController@getTargetTrends');

@@ -1,10 +1,10 @@
-angular.module('bootcamp',['ngResource', 'ngTagsInput']); 
+angular.module('usertags',['ngResource', 'ngTagsInput']); 
 //inicia una aplicacion 
 //[ llama al modulo para que funcione ]
 //Añadido el modulo ngTagsInput como una dependencia en la aplicación Angular
 
-angular.module ('bootcamp').factory(
-	'nombre_modelo',
+angular.module ('usertags').factory(
+	'HashtagModel',
 	[
 		'$resource',
 		function ($resource ) {
@@ -38,7 +38,7 @@ angular.module ('bootcamp').factory(
 	]
 );
 
-angular.module ('bootcamp').factory(
+angular.module ('usertags').factory(
 	'ItemResource',
 	[
 		'$resource',
@@ -62,14 +62,14 @@ angular.module ('bootcamp').factory(
 	]
 );
 
-angular.module('bootcamp').controller(
-	'MyCtrl',
+angular.module('usertags').controller(
+	'HashtagController',
 	[ 
 		'$scope',
 		'$http',
 		'ItemResource',
-		'nombre_modelo',
-		function($scope, $http, ItemResource,nombre_modelo) {
+		'HashtagModel',
+		function($scope, $http, ItemResource,HashtagModel) {
 
 			$scope.tags = ItemResource.items;
 			ItemResource.getItems();
@@ -79,14 +79,13 @@ angular.module('bootcamp').controller(
 	        };
 
 	        $scope.envia = function(str_name){ 
-				nombre_modelo.CrearTag(str_name);
+				HashtagModel.CrearTag(str_name);
 			 };
 
 			$scope.elimina = function(str_name){ 
 				console.log('Sha creat elimina ' + str_name);
-				nombre_modelo.EliminarTag(str_name);
-
-			 };
+				HashtagModel.EliminarTag(str_name);
+			};
 	    }
     ]
 );

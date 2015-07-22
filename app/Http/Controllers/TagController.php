@@ -8,6 +8,8 @@ use App\User;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Log;
+use Auth;
+use DB;
 
 class TagController extends Controller
 {
@@ -45,28 +47,45 @@ class TagController extends Controller
      */
     public function store(Request $req)
     {
+        $tag = strtolower($req->input( 'tag' ));
+
         $validator = Validator::make($req->all(), [
             'tag'      => 'required|unique:hashtags,name',
         ]);
+
         if ($validator->fails()) {
+            //Already Exists
+            $hashtag = DB::table('hashtags')->where('name', 'tag')->first();
+
             //Formato de Macro respuesta JSON
-            return response()->api(400,'no', 'Error insert hashtag, repeated', '');
+            //return response()->api(400,'no', 'Error insert hashtag, repeated', '');
+       
+        }else{    
+            $hashtag = new Hashtag();
+            //Hashtag en minúsculas
+            $hashtag->name = strtolower($tag);
+            //Añade Hashtag a la tabla hashtags mysql
+            $hashtag->save();
         }
 
-        $tag = $req->input( 'tag' );
-        $hashtag = new Hashtag();
-        
-        //Hashtag en minúsculas
-        $hashtag->name = strtolower($tag);
-        
-        //Añade Hashtag a la tabla hashtags mysql
-        $hashtag->save();
+        //comprovar que la relación no exista ya
+        $user = Auth::user();
+        //Crea la relación hashtag-user
+        $hashtag->users()->attach($user->id); //this executes the insert-query  
 
-        //$user = User::find($id);
-        //$user->hashtag()->attach($id); //this executes the insert-query
 
-        //Formato de Macro respuesta JSON
-        return response()->api(200,'yes', 'Success saving new hashtag', '');
+        /*if (count($user->hashtags($hashtag->id))>0)
+        {
+          return response()->api(400,'no', 'Error insert hashtag_user, already exists', '');// exists
+       
+        } else{
+
+            //Crea la relación hashtag-user
+            $hashtag->users()->attach($user->id); //this executes the insert-query
+
+            //Formato de Macro respuesta JSON
+            return response()->api(200,'yes', 'Success saving new hashtag', '');
+        }*/
     }
 
     /**

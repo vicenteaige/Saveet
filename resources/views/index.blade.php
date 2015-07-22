@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html ng-app="logout, bootcamp" xmlns="http://www.w3.org/1999/html">
+<html xmlns="http://www.w3.org/1999/html">
 
     <head>
         <title>Laravel</title>
@@ -19,8 +19,10 @@
         <!--ngTags-input-->
         <link rel="stylesheet" href="bower_components/ng-tags-input/ng-tags-input.min.css">  
 
+        <script type="application/javascript" src="/js/logout.js"></script>
         <script type="application/javascript" src="/js/tag.js"></script>
-        <script src="/js/logout.js"></script>
+
+        <script>var rootApp = angular.module('rootApp', ['usertags','logout'])</script>
         <style>
             html, body {
                 height: 100%;
@@ -50,8 +52,8 @@
             }
         </style>
     </head>
-    <body>
-    <div class="container" ng-controller="LogoutController">
+    <body ng-app="rootApp">
+   <div class="container">
         <div class="jumbotron">
             @if (Auth::guest())
                 <h1>Welcome, you can see the statistics of the trending topics<br />
@@ -61,21 +63,21 @@
             @else
                 <h1>Welcome {{ Auth::user()->name }}, you can see the statistics of the trending topics<br />
                 and hashtags of interest.</h1>
+               <div class="content" ng-app="usertags"  ng-controller="HashtagController" >  
 
-                
-                    
-            @endif
-        </div>
-        <p><a href="" ng-click="logout()">Log out</a></p>
-
-    </div>
-    <div class="content" ng-controller="MyCtrl" >  
-
-                        <h1>Hashtags de usuario:</h1>
+                        <h1>This are your hashtags</h1>
                         <tags-input ng-model="tags" on-tag-added="envia ( $tag.text )" on-tag-removed="elimina ( $tag.text )" >
                             <auto-complete source="loadTags($query)"></auto-complete>
                         </tags-input>
                 </div>
+                <div ng-app="logout"  ng-controller="LogoutController">
+                    <p><a href=""  ng-click="logout()">Log out</a></p>
+                </div>                    
+            @endif
+        </div>
+
+    </div>
+   
     </body>
 </html>
 
