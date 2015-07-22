@@ -38,7 +38,7 @@
         </div>
         <button class="btn btn-lg btn-primary btn-block"  ng-click="login($event, sendEmail, sendPassword, remember, _token)">Sign in</button>
         <div id="signup">
-            <label><a href="register">Don't have an account? Sign Up</a></label>
+            <label><a href="{{Config::get('app.url')}}register">Don't have an account? Sign Up</a></label>
         </div>
 
 

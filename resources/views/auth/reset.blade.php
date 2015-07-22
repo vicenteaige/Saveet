@@ -30,7 +30,7 @@
 
         <button class="btn btn-lg btn-primary btn-block"  ng-click="reset(sendPassword, sendPasswordConfirmation)">Reset password</button>
         <div id="signup">
-            <label><a href="login">Do you have an account? Sign In</a></label>
+            <label><a href="{{Config::get('app.url')}}login">Do you have an account? Sign In</a></label>
         </div>
 
 
