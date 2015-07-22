@@ -61,7 +61,7 @@ class PasswordController extends Controller
         $validator = Validator::make($request->all(), [
             //'email' => 'required|email|exists:users,email',
             'password'  =>'required|string|confirmed',
-            'password_confirmation' => 'required|string'
+            'password_confirmation' => 'required|string',
             'token'=>'required'
         ]);
         if ($validator->fails()) {
