@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Log;
 use App\Http\Requests;
 use Illuminate\Http\Request;
-
+use App\Hashtag;
 
 /*
  * Twitter Api Exchange
@@ -23,10 +23,24 @@ class TwitterController extends Controller
     public function getTargetTrends()
     {
 
+        $hashtags = Hashtag::all();
+
+        // Api Woeid trends
         $trends = [];
         foreach ($this->getPlaces() as $city => $woeid) {
             $trends = array_merge($trends, $this->requestTrendsByLocation($woeid));
         }
+
+        // User trends
+        foreach($hashtags as $hashtag){
+            array_push($trends, $hashtag->name);
+        }
+
+        // Discard duplicates
+        array_unique($trends);
+
+        // TODO insert to redis, if any change occurs do not reload
+
 
         $response['trends'] = $trends;
 
