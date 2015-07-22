@@ -10,14 +10,9 @@
 |
 */
 
-Route::resource('v1/tag','TagController');
-
-Route::delete('v1/tag/{id}','TagController@destroy');
-
 Route::get('tags', function () {
      return view('tags');
  });
-
 
 //////////
 // Home //
@@ -86,18 +81,18 @@ Route::group(['prefix' => 'v1'], function () {
         //Route::resource('register', 'UserController');
 
         Route::post('password/reset', 'Auth\PasswordController@store');
-        Route::post('password/email', 'Auth\PasswordController@apiresetPassword');
+        Route::post('password/email', 'Auth\PasswordController@apiResetPassword');
 
         Route::resource('register', 'UserController');
-
 
     });
     ////////////////////////////////////////////////////////////////
     // Hashtags related calls (requires an authentificated user)  //
     ////////////////////////////////////////////////////////////////
-    Route::group(['middleware' => 'auth'], function() {
-        //Route::resource('tags', '' /* 'TagController' */ );
-    });
+    Route::resource('tag','TagController');
+    Route::delete('tag/{id}','TagController@destroy');
+    
+
 
 
     Route::group(['prefix' => 'twitter'], function() {

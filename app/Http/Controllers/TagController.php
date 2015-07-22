@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 use Validator;
 use Illuminate\Http\Request;
 use App\Hashtag;
+use App\User;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Log;
+use Auth;
+use DB;
 
 class TagController extends Controller
 {
@@ -17,7 +20,6 @@ class TagController extends Controller
      */
     public function index()
     {
-
         $hashtags = Hashtag::all();
         
         $obj = array();
@@ -45,37 +47,45 @@ class TagController extends Controller
      */
     public function store(Request $req)
     {
+        $tag = strtolower($req->input( 'tag' ));
+
         $validator = Validator::make($req->all(), [
             'tag'      => 'required|unique:hashtags,name',
         ]);
+
         if ($validator->fails()) {
-            return response()->json([
-                [
-                    'header' => [
-                        'success' => 'no',
-                        'msg' => 'Error insert hashtag, repetido'
-                    ]
-                ]
-            ]);
+            //Already Exists
+            $hashtag = DB::table('hashtags')->where('name', 'tag')->first();
+
+            //Formato de Macro respuesta JSON
+            //return response()->api(400,'no', 'Error insert hashtag, repeated', '');
+       
+        }else{    
+            $hashtag = new Hashtag();
+            //Hashtag en minúsculas
+            $hashtag->name = strtolower($tag);
+            //Añade Hashtag a la tabla hashtags mysql
+            $hashtag->save();
         }
 
-        $tag = $req->input( 'tag' );
-        $hashtag = new Hashtag();
-        
-        //Hashtag en minúsculas
-        $hashtag->name = strtolower($tag);
-        
-        //Añade Hashtag a la tabla hashtags mysql
-        $hashtag->save();
+        //comprovar que la relación no exista ya
+        $user = Auth::user();
+        //Crea la relación hashtag-user
+        $hashtag->users()->attach($user->id); //this executes the insert-query  
 
-        return response()->json([
-                [
-                    'header' => [
-                        'success' => 'yes',
-                        'msg' => ''
-                    ]
-                ]
-        ]);
+
+        /*if (count($user->hashtags($hashtag->id))>0)
+        {
+          return response()->api(400,'no', 'Error insert hashtag_user, already exists', '');// exists
+       
+        } else{
+
+            //Crea la relación hashtag-user
+            $hashtag->users()->attach($user->id); //this executes the insert-query
+
+            //Formato de Macro respuesta JSON
+            return response()->api(200,'yes', 'Success saving new hashtag', '');
+        }*/
     }
 
     /**
@@ -119,13 +129,20 @@ class TagController extends Controller
      */
     public function destroy($id)
     {
+
         Log::debug('tagcontroller destroy');
         //Eliminar tag de mysql
-        //$tag = $req->input( 'tag' );
         $hashtag = Hashtag::where('name', $id)->firstOrFail();
         
-        //Añade Hashtag a la tabla hashtags mysql
-        $hashtag->delete();
+        try {
+            //Eliminar tag de mysql
+            $hashtag->delete();
+            return response()->api(200,'yes', 'Success saving new hashtag', '');
+        } catch (Exception $e) {
+            Log::error("Failed deleting the user hashtagh from hashtags");
+            Log::error($e->getMessage());
         
+            return response()->api(400,'no', 'Failed deleting hashtag', '');
+        }
     }
 }

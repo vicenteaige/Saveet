@@ -145,6 +145,10 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\ResponseMacroServiceProvider::class,
 
+
+        Jenssegers\Mongodb\MongodbServiceProvider::class,
+
+
         //
         // Laravel IDE Helper
         //

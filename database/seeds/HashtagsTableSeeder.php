@@ -13,9 +13,5 @@ class HashtagsTableSeeder extends Seeder
     public function run()
     {
         DB::table('hashtags')->delete();
-
-        Hashtag::create(['name'=> 'bootcamp']);
-
-        Hashtag::create(['name'=> 'bootcamp2']);
     }
 }
