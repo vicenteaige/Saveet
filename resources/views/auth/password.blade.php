@@ -8,6 +8,7 @@
     <script src="/bower_components/bootstrap/js/bootstrap.js"></script>
     <link rel="stylesheet" href="/bower_components/bootstrap/css/bootstrap.css" type="text/css">
     <link rel="stylesheet" href="/css/style.css">
+    <script src="/js/password.js"></script>
     <!--<script src="/js/login.js"></script>-->
 </head>
 <body>

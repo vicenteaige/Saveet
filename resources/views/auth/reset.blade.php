@@ -15,12 +15,6 @@
 <!-- <form method="POST" action="/password/reset"> -->
 
     <input type="hidden" name="token" value="{{ $token }}">
-
-    <div>
-        Email
-        <input type="email" ng-model="sendEmail" name="email">
-    </div>
-
     <div>
         Password
         <input type="password" ng-model="sendPassword" name="password">
@@ -32,7 +26,7 @@
     </div>
 
     <div>
-        <button type="submit" ng-click="reset(sendEmail, sendPassword, sendPasswordConfirmation)">
+        <button ng-click="reset(sendPassword, sendPasswordConfirmation)">
             Reset Password
         </button>
     </div>
