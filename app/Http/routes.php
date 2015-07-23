@@ -18,8 +18,13 @@ Route::get('tags', function () {
 // Home //
 //////////
 
-Route::get('/', function () {
-    return view('index');
+Route::group(['middleware' => 'auth'], function() {
+    Route::get('/', function () {
+        return view('index');
+    });
+    Route::get('home', function(){
+        return view('index');
+    });
 });
 
 //Register
@@ -30,12 +35,6 @@ Route::get('register', function(){
 //Login
 Route::get('login', function(){
     return view('auth/login');
-});
-
-Route::group(['middleware' => 'auth'], function() {
-    Route::get('home', function(){
-        return view('index');
-    });
 });
 
 Route::get('password/email', function(){
@@ -58,6 +57,7 @@ Route::post('password/email', 'Auth\PasswordController@postEmail');
 // Password reset routes...
 Route::get('password/reset/{token}', 'Auth\PasswordController@getReset');
 Route::post('password/reset', 'Auth\PasswordController@postReset');
+Route::get('activate/{token}', 'ActivateController@store');
 
 //////////////////
 // v1 API calls //
@@ -92,11 +92,12 @@ Route::group(['prefix' => 'v1'], function () {
 
 
     Route::group(['prefix' => 'twitter'], function() {
-        Route::get('/targettrends', 'TwitterController@getTargetTrends');
+        Route::get('/trends', 'TwitterController@getTrends');
+        Route::get('/daemon', 'TwitterController@daemonServiceTrends');
     });
 
     Route::group(['prefix' => 'daemon'], function() {
-        Route::get('/reload', 'DaemonController@reloadDaemon');
+        Route::get('/update', 'DaemonController@updateTrends');
         Route::get('/stop', 'DaemonController@stopDaemon');
     });
 
