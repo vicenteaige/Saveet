@@ -8,6 +8,7 @@ angular.module('password').controller(
         'ResetModel',
         function($scope, ResetModel){
             $scope.password = function(sendEmail){
+                $scope.loading = true;
                 ResetModel.sendData(sendEmail);
                
             };

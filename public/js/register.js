@@ -9,6 +9,7 @@ angular.module('register').controller(
         //function($event, $scope, RegisterModel){
         function($scope, RegisterModel){
             $scope.register = function(event, sendName, sendEmail, sendTwitterUserName, sendPassword, sendPasswordConfirmation, _token){
+                $scope.loading = true;
                 RegisterModel.sendData($scope, sendName, sendEmail, sendTwitterUserName, sendPassword, sendPasswordConfirmation, _token);
                 event.preventDefault();
             };
@@ -42,6 +43,7 @@ angular.module ('register').factory(
                         console.log(data);
                         //error message
                         $scope.errors = data.data.header.msg;
+                        $scope.loading = false;
                         $scope.myValue = true;
                     });
             };
