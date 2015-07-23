@@ -59,6 +59,9 @@ Route::get('password/reset/{token}', 'Auth\PasswordController@getReset');
 Route::post('password/reset', 'Auth\PasswordController@postReset');
 Route::get('activate/{token}', 'ActivateController@store');
 
+// d3 tests
+Route::get('test/json', 'TwitterController@testJson');
+
 //////////////////
 // v1 API calls //
 //////////////////
@@ -87,9 +90,6 @@ Route::group(['prefix' => 'v1'], function () {
     ////////////////////////////////////////////////////////////////
     Route::resource('tag','TagController');
     Route::delete('tag/{id}','TagController@destroy');
-    
-
-
 
     Route::group(['prefix' => 'twitter'], function() {
         Route::get('/trends', 'TwitterController@getTrends');
@@ -100,9 +100,6 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('/update', 'DaemonController@updateTrends');
         Route::get('/stop', 'DaemonController@stopDaemon');
     });
-
-
-
 });
 
 

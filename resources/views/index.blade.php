@@ -32,7 +32,7 @@
         <!-- Guarreria d3.js -->
         <style>
 
-            body {
+            .plot {
                 font: 10px sans-serif;
             }
 
@@ -106,7 +106,7 @@
         </div>
     </div><!-- /.container -->
 
-    <div >
+    <div class="plot" style="text-align: center">
         <script>
             var margin = {top: 20, right: 80, bottom: 30, left: 50},
                     width = 960 - margin.left - margin.right,
@@ -133,15 +133,15 @@
             var line = d3.svg.line()
                     .interpolate("basis")
                     .x(function(d) { return x(d.date); })
-                    .y(function(d) { return y(d.temperature); });
+                    .y(function(d) { return y(d.tweets); });
 
-            var svg = d3.select("body").append("svg")
+            var svg = d3.select(".plot").append("svg")
                     .attr("width", width + margin.left + margin.right)
                     .attr("height", height + margin.top + margin.bottom)
                     .append("g")
                     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-            d3.json("test/data2.json", function(error, data) {
+            d3.json("/test/json", function(error, data) {
                 if (error) throw error;
                 color.domain(d3.keys(data[0]).filter(function(key) { return key !== "date"; }));
                 data.forEach(function(d) {
@@ -152,7 +152,7 @@
                     return {
                         name: name,
                         values: data.map(function(d) {
-                            return {date: d.date, temperature: +d[name]};
+                            return {date: d.date, tweets: +d[name]};
                         })
                     };
                 });
@@ -160,8 +160,8 @@
                 x.domain(d3.extent(data, function(d) { return d.date; }));
 
                 y.domain([
-                    d3.min(cities, function(c) { return d3.min(c.values, function(v) { return v.temperature; }); }),
-                    d3.max(cities, function(c) { return d3.max(c.values, function(v) { return v.temperature; }); })
+                    d3.min(cities, function(c) { return d3.min(c.values, function(v) { return v.tweets; }); }),
+                    d3.max(cities, function(c) { return d3.max(c.values, function(v) { return v.tweets; }); })
                 ]);
 
                 svg.append("g")
@@ -179,27 +179,42 @@
                         .style("text-anchor", "end")
                         .text("Tweets");
 
-                var city = svg.selectAll(".city")
+                var tag = svg.selectAll(".tag")
                         .data(cities)
                         .enter().append("g")
-                        .attr("class", "city");
+                        .attr("class", "tag");
 
-                city.append("path")
+                tag.append("path")
                         .attr("class", "line")
                         .attr("d", function(d) { return line(d.values); })
                         .style("stroke", function(d) { return color(d.name); });
 
-                city.append("text")
+                tag.append("text")
                         .datum(function(d) { return {name: d.name, value: d.values[d.values.length - 1]}; })
-                        .attr("transform", function(d) { return "translate(" + x(d.value.date) + "," + y(d.value.temperature) + ")"; })
+                        .attr("transform", function(d) { return "translate(" + x(d.value.date) + "," + y(d.value.tweets) + ")"; })
                         .attr("x", 3)
                         .attr("dy", ".35em")
                         .text(function(d) { return d.name; });
+
+                var path = svg.append("path")
+                        .attr("d", line(data))
+                        .attr("stroke", "steelblue")
+                        .attr("stroke-width", "2")
+                        .attr("fill", "none");
+
+                var totalLength = path.node().getTotalLength();
+
+                path
+                        .attr("stroke-dasharray", totalLength + " " + totalLength)
+                        .attr("stroke-dashoffset", totalLength)
+                        .transition()
+                        .duration(2000)
+                        .ease("linear")
+                        .attr("stroke-dashoffset", 0);
             });
 
         </script>
     </div>
-
     <footer class="footer">
         <div class="git-logo">
             <p class="text-muted">Check this project on GitHub

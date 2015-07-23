@@ -164,4 +164,49 @@ class TwitterController extends Controller
         abort(500, "Twitter error: ".$rsJsonString);
 
     }
+
+    public function testJson() {
+        return response()->json([
+          [
+            "date" =>"20111001",
+            "#ColauGordita" => 989,
+            "#AIDSpride" => 54235,
+            "#RomevaFacts" => 1290,
+            "#YourMom" => 14850,
+            "#PistoloTeam" => 13000
+          ],
+          [
+            "date" => "20111002",
+            "#ColauGordita" => 788,
+            "#AIDSpride" => 58454,
+            "#RomevaFacts" => 2300,
+            "#YourMom" => 18000,
+            "#PistoloTeam" => 22000
+          ],
+          [
+            "date" => "20111003",
+            "#ColauGordita" => 636,
+            "#AIDSpride" => 11544,
+            "#RomevaFacts" => 4320,
+            "#YourMom" => 25800,
+            "#PistoloTeam" => 12000
+          ],
+          [
+            "date" => "20111004",
+            "#ColauGordita" => 320,
+            "#AIDSpride" => 84856,
+            "#RomevaFacts" => 8320,
+            "#YourMom" => 28050,
+            "#PistoloTeam" => 32000
+          ],
+          [
+            "date" => "20111005",
+            "#ColauGordita" => 454,
+            "#AIDSpride" => 24658,
+            "#RomevaFacts" => 7201,
+            "#YourMom" => 9400,
+            "#PistoloTeam" => 23000
+          ]
+        ]);
+    }
 }
