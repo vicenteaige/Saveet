@@ -54,7 +54,6 @@ class UserController extends Controller
             $newuser = new User();
             $newuser->name = $request->name;
             $newuser->email = $request->email;
-            //$newuser->activateToken = bcrypt($request->email);
             $newuser->activateToken = uniqid();
             $newuser->twitter_username = !(is_null($request->twitter_username)) ? $request->twitter_username : "";
             $newuser->password = bcrypt($request->password);

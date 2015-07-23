@@ -53,7 +53,11 @@ Route::post('password/email', 'Auth\PasswordController@postEmail');
 // Password reset routes...
 Route::get('password/reset/{token}', 'Auth\PasswordController@getReset');
 Route::post('password/reset', 'Auth\PasswordController@postReset');
-Route::get('activate/{token}', 'ActivateController@getActivateView');
+// User activation
+Route::get('/activate/{token}', 'ActivateController@store');
+
+// d3 tests
+Route::get('test/json', 'TwitterController@testJson');
 
 //////////////////
 // v1 API calls //
@@ -89,10 +93,6 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('/update', 'DaemonController@updateTrends');
         Route::get('/stop', 'DaemonController@stopDaemon');
     });
-
-
-    // User activation
-    Route::post('/activate', 'ActivateController@store');
 
     Route::group(['prefix' => 'es'], function() {
         Route::get('/test', 'ElasticController@testEs');
