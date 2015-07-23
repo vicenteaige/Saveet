@@ -28,8 +28,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
         
         <script>var rootApp = angular.module('rootApp', ['logout','usertags'])</script>
-
-        <!-- Guarreria d3.js -->
+        
         <style>
 
             .plot {
