@@ -22,7 +22,27 @@ class TwitterController extends Controller
 
     # Public Methods
 
-    public function getTargetTrends()
+    public function getTrends()
+    {
+        // TODO laravel connection
+        $redis = new Redis();
+        $redis->connect('localhost', 6379);
+
+        $redisTrends = json_decode($redis->get('woeid_hashtags'));
+
+        $rs = array("trends"=> []);
+        if ($redisTrends){
+            $rs["trends"] = $redisTrends;
+        }
+
+        return response()
+            ->json($rs)
+            ->header('Content-Type', 'application/json');
+    }
+
+    # Public Methods
+
+    public function daemonServiceTrends()
     {
 
         $hashtags = Hashtag::all();
@@ -32,6 +52,7 @@ class TwitterController extends Controller
         foreach ($this->getPlaces() as $city => $woeid) {
             $trends = array_merge($trends, $this->requestTrendsByLocation($woeid));
         }
+        $woeid_hashtags_encoded = json_encode($trends);
 
         // User trends
         foreach($hashtags as $hashtag){
@@ -45,10 +66,14 @@ class TwitterController extends Controller
         $encodedTrends = json_encode(array($trends));
 
 
-        // TODO insert to redis, if any change occurs do not reload
+        // TODO laravel connection
         $redis = new Redis();
         $redis->connect('localhost', 6379);
-        $redisTrends = json_decode($redis->get('hashtags'));
+
+        // Save woeid_hashtags
+        $redis->set('woeid_hashtags', $woeid_hashtags_encoded);
+
+        $redisTrends = json_decode($redis->get('daemon_hashtags'));
 
         if ($redisTrends == $trends) {
             return response()
@@ -56,11 +81,11 @@ class TwitterController extends Controller
                 ->header('Content-Type', 'application/json');
         }
 
-        $redis->set('hashtags', $encodedTrends);
+        $redis->set('daemon_hashtags', $encodedTrends);
         $notify = new DaemonController();
         $notify->updateTrends($trends);
 
-        
+
         return response()
             ->json($trends)
             ->header('Content-Type', 'application/json');
