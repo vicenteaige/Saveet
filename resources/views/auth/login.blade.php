@@ -58,6 +58,11 @@
             <label><a href="{{Config::get('app.url')}}register">Don't have an account? Sign Up</a></label>
         </div>
 
+        <div class="loading" ng-show="loading">
+            <i class="fa fa-circle-o-notch fa-4x fa-spin"></i>
+        </div>
+
+
 
 
 

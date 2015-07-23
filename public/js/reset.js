@@ -9,10 +9,11 @@ angular.module('reset').controller(
         //function($scope, ResetModel, $event){
         function($scope, ResetModel){
             $scope.reset = function(sendPassword, sendPasswordConfirmation){
+                $scope.loading = true;
                 var pathArray = window.location.pathname.split( '/' );
                 var token = pathArray[3];
 
-                ResetModel.sendData(sendPassword, sendPasswordConfirmation, token);
+                ResetModel.sendData($scope, sendPassword, sendPasswordConfirmation, token);
                
             };
             //$event.preventDefault();
@@ -35,13 +36,14 @@ angular.module ('reset').factory(
 
 
 
-            resource.sendData = function(sendPassword, sendPasswordConfirmation, token) {
+            resource.sendData = function($scope, sendPassword, sendPasswordConfirmation, token) {
                 item.sendData({password:sendPassword, password_confirmation:sendPasswordConfirmation, token:token}).$promise.then( 
                     function( data ){
                         console.log(data);
                         if(data.header.success== "yes"){
                            $window.location.href = 'login';
                         }
+                        $scope.loading = false;
                     },
                     function( data ){
                         console.log(data);

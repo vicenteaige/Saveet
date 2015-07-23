@@ -10,10 +10,6 @@
 |
 */
 
-Route::get('tags', function () {
-     return view('tags');
- });
-
 //////////
 // Home //
 //////////
@@ -57,7 +53,8 @@ Route::post('password/email', 'Auth\PasswordController@postEmail');
 // Password reset routes...
 Route::get('password/reset/{token}', 'Auth\PasswordController@getReset');
 Route::post('password/reset', 'Auth\PasswordController@postReset');
-Route::get('activate/{token}', 'ActivateController@store');
+// User activation
+Route::get('/activate/{token}', 'ActivateController@store');
 
 // d3 tests
 Route::get('test/json', 'TwitterController@testJson');
@@ -74,11 +71,6 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('login', 'UserController@apiLogUser');
         Route::get('logout', 'UserController@apiLogoutUser');
 
-        //Route::resource('password/reset', 'Auth\PasswordController');
-        //Route::resource('password/change', 'Auth\PasswordController');
-        //Route::post('password/change', 'Auth\PasswordController@store');
-        //Route::resource('register', 'UserController');
-
         Route::post('password/reset', 'Auth\PasswordController@store');
         Route::post('password/email', 'Auth\PasswordController@apiResetPassword');
 
@@ -91,6 +83,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::resource('tag','TagController');
     Route::delete('tag/{id}','TagController@destroy');
 
+
     Route::group(['prefix' => 'twitter'], function() {
         Route::get('/trends', 'TwitterController@getTrends');
         Route::get('/daemon', 'TwitterController@daemonServiceTrends');
@@ -100,6 +93,12 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('/update', 'DaemonController@updateTrends');
         Route::get('/stop', 'DaemonController@stopDaemon');
     });
+
+    Route::group(['prefix' => 'es'], function() {
+        Route::get('/test', 'ElasticController@testEs');
+    });
+
+
 });
 
 

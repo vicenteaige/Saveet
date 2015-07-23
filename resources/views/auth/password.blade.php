@@ -44,6 +44,10 @@
             <label><a href="{{Config::get('app.url')}}login">Do you have an account? Sign In</a></label>
         </div>
 
+        <div class="loading" >
+            <i class="fa fa-circle-o-notch fa-4x fa-spin"></i>
+        </div>
+
 
     </form>
 
