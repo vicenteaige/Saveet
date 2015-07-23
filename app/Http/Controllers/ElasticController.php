@@ -19,21 +19,61 @@ class ElasticController extends Controller
      *
      * @return Response
      */
-    public function testEs(){
+    public function testEs()
+    {
+
+        $searchParams['index'] = 'mongoindex';
+        $searchParams['size'] = 0;
+
+        $search = '{
+                    "aggs": {
+                        "tweets": {
+                            "filter": {
+                                "term": {
+                                    "tweet.entities.hashtags.text": "barcelona"
+                                }
+                            },
+                            "aggs": {
+                                "prices": {
+                                    "histogram": {
+                                        "field": "tweet.created_at",
+                                        "interval": 36000
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "size": 0
+                }';
+        $searchParams['body'] = json_decode($search);
+
+        $elastic = new Es();
+
+        $result = $elastic->search($searchParams);
+
+        //$result = Es::search($searchParams);
+        return response()
+            ->json($result)
+            ->header('Content-Type', 'application/json');
+
+
+
+    }
+    public function testEs2(){
 
         $searchParams['index'] = 'mongoindex';
         $searchParams['size'] = 50;
-        $searchParams['body']['query']['bool']['must'][array(["wildcard"])] = 'foofield:barstring';
-
-        /*
-         *
-* {
+        $searchParams['body'] = json_decode('
+            {
               "query": {
-                "bool": {
-                  "must": [
+                        "bool": {
+                            "must": [
                     {
-                      "wildcard": {
-                        "tweet.text": "*lol*"
+                        "range": {
+                        "tweet.created_at": {
+                            "from": "now-1d",
+                          "to": "now"
+                        }
                       }
                     }
                   ],
@@ -42,11 +82,18 @@ class ElasticController extends Controller
                 }
               },
               "from": 0,
-              "size": 10,
+              "size": 0,
               "sort": [],
-              "facets": {}
-            }
-         */
+              "facets": {
+                        "histo1": {
+                            "histogram": {
+                                "field": "created_at",
+                    "time_interval": "1.5h"
+                  }
+                }
+              }
+            }'
+        );
 
         $elastic = new Es();
 
@@ -58,7 +105,7 @@ class ElasticController extends Controller
             ->header('Content-Type', 'application/json');
     }
 
-    public function testEs2(){
+    public function testEs3(){
 
         $searchParams['index'] = 'mongoindex';
         $searchParams['size'] = 50;
