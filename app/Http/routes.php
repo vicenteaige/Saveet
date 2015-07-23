@@ -101,6 +101,10 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('/stop', 'DaemonController@stopDaemon');
     });
 
+    Route::group(['prefix' => 'es'], function() {
+        Route::get('/test', 'ElasticController@testEs');
+    });
+
 
 
 });

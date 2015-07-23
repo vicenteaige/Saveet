@@ -159,6 +159,11 @@ return [
         //
         Jenssegers\Mongodb\MongodbServiceProvider::class,
 
+        //
+        // ES
+        //
+        Shift31\LaravelElasticsearch\ElasticsearchServiceProvider::class,
+
     ],
 
     /*
