@@ -32,13 +32,14 @@ class DaemonController extends Controller
     /**
      * Publishes a 'reload' event to Redis Pub/Sub 'daemon-notify' channel
      *
+     * @param array $trends
      * @return Response
      */
-    public function updateTrends(){
+    public function updateTrends($trends = ['barcelona']){
 
         $redis = new Redis();
         $redis->connect('localhost', 6379);
-        $redis->publish('daemon-notify', json_encode(array('barcelona')));
+        $redis->publish('daemon-notify', json_encode($trends));
 
         $response = array('success' => true);
         return response()

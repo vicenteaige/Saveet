@@ -6,6 +6,8 @@ use Log;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\Hashtag;
+use Redis;
+use App\Http\Controllers\DaemonController;
 
 /*
  * Twitter Api Exchange
@@ -39,13 +41,28 @@ class TwitterController extends Controller
         // Discard duplicates
         array_unique($trends);
 
+        // Encode trends
+        $encodedTrends = json_encode(array($trends));
+
+
         // TODO insert to redis, if any change occurs do not reload
+        $redis = new Redis();
+        $redis->connect('localhost', 6379);
+        $redisTrends = json_decode($redis->get('hashtags'));
 
+        if ($redisTrends == $trends) {
+            return response()
+                ->json(null)
+                ->header('Content-Type', 'application/json');
+        }
 
-        $response['trends'] = $trends;
+        $redis->set('hashtags', $encodedTrends);
+        $notify = new DaemonController();
+        $notify->updateTrends($trends);
 
+        
         return response()
-            ->json($response)
+            ->json($trends)
             ->header('Content-Type', 'application/json');
     }
 
