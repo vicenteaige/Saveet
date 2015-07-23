@@ -154,12 +154,12 @@ return [
         //
         // MongoDB ORM plugin
         //
-        //Jenssegers\Mongodb\MongodbServiceProvider::class,
+        Jenssegers\Mongodb\MongodbServiceProvider::class,
 
         //
         // ES
         //
-        //Shift31\LaravelElasticsearch\ElasticsearchServiceProvider::class,
+        Shift31\LaravelElasticsearch\ElasticsearchServiceProvider::class,
 
     ],
 
