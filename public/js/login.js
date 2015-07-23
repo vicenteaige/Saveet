@@ -7,6 +7,7 @@ angular.module('login').controller(
         'LoginModel',
         function($scope, LoginModel){
             $scope.login = function(event, sendEmail, sendPassword, remember, _token){
+                $scope.loading = true;
                 //alert(sendEmail + sendPassword);
                 LoginModel.sendData($scope, sendEmail, sendPassword, remember, _token);
                 event.preventDefault();
@@ -43,6 +44,7 @@ angular.module('login').factory(
                         console.log(data);
                         //error message
                         $scope.error = data.data.header.msg;
+                        $scope.loading = false;
                         $scope.myValue = true;
                 });
             };

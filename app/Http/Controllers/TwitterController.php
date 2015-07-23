@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Log;
 use App\Http\Requests;
 use Illuminate\Http\Request;
-
+use App\Hashtag;
+use Redis;
+use App\Http\Controllers\DaemonController;
 
 /*
  * Twitter Api Exchange
@@ -20,18 +22,78 @@ class TwitterController extends Controller
 
     # Public Methods
 
-    public function getTargetTrends()
+    /**
+     * Loads and array of twitter api trends stored in redis
+     *
+     * @return Response
+     */
+    public function getTrends()
+    {
+        // TODO laravel connection
+        $redis = new Redis();
+        $redis->connect('localhost', 6379);
+
+        $redisTrends = json_decode($redis->get('woeid_hashtags'));
+
+        $rs = array("trends"=> []);
+        if ($redisTrends){
+            $rs["trends"] = $redisTrends;
+        }
+
+        return response()
+            ->json($rs)
+            ->header('Content-Type', 'application/json');
+    }
+
+    /**
+     * Cronjob endpoint, merges user hashtags and twitter api trends
+     * and stores the result to redis.
+     * If any change occurs this service will notify the daemon via
+     * DeamonController passing a new array of trends to track.
+     *
+     * @return Array of trends
+     */
+    public function daemonServiceTrends()
     {
 
+        // TODO laravel connection
+        $redis = new Redis();
+        $redis->connect('localhost', 6379);
+
+        // Api Woeid trends
         $trends = [];
         foreach ($this->getPlaces() as $city => $woeid) {
             $trends = array_merge($trends, $this->requestTrendsByLocation($woeid));
         }
 
-        $response['trends'] = $trends;
+        // Save woeid_hashtags
+        $redis->set('woeid_hashtags', json_encode($trends));
+
+        // User trends
+        $hashtags = Hashtag::all();
+        foreach($hashtags as $hashtag){
+            array_push($trends, $hashtag->name);
+        }
+
+        // Discard duplicates
+        array_unique($trends);
+
+        $redisTrends = json_decode($redis->get('daemon_hashtags'));
+
+        // If any change, return
+        if ($trends == $redisTrends) {
+            return response()
+                ->json(null)
+                ->header('Content-Type', 'application/json');
+        }
+
+        // Store new hashtags to database
+        $redis->set('daemon_hashtags', json_encode(array($trends)));
+        $notify = new DaemonController();
+        $notify->updateTrends($trends);
 
         return response()
-            ->json($response)
+            ->json($trends)
             ->header('Content-Type', 'application/json');
     }
 

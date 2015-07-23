@@ -10,10 +10,6 @@
 |
 */
 
-Route::get('tags', function () {
-     return view('tags');
- });
-
 //////////
 // Home //
 //////////
@@ -85,16 +81,22 @@ Route::group(['prefix' => 'v1'], function () {
 
 
     Route::group(['prefix' => 'twitter'], function() {
-        Route::get('/targettrends', 'TwitterController@getTargetTrends');
+        Route::get('/trends', 'TwitterController@getTrends');
+        Route::get('/daemon', 'TwitterController@daemonServiceTrends');
     });
 
     Route::group(['prefix' => 'daemon'], function() {
-        Route::get('/reload', 'DaemonController@reloadDaemon');
+        Route::get('/update', 'DaemonController@updateTrends');
         Route::get('/stop', 'DaemonController@stopDaemon');
     });
 
+
     // User activation
     Route::post('/activate', 'ActivateController@store');
+
+    Route::group(['prefix' => 'es'], function() {
+        Route::get('/test', 'ElasticController@testEs');
+    });
 
 
 });

@@ -23,7 +23,7 @@ angular.module ('usertags').factory(
 			
 			resource.EliminarTag = function(tag_a_borrar){
 				
-				var item2 = $resource ( 'v1/tag/' + tag_a_borrar, {}, {
+				var item2 = $resource ( 'v1/tag/' + encodeURIComponent(tag_a_borrar), {}, {
 					//DELETE - destroy
 					EliminarTag : { method : 'DELETE', isArray : false }
 				});
@@ -45,15 +45,22 @@ angular.module ('usertags').factory(
 		function ($resource ) {
 
 			var resource = {}; //funcion pública			
-			resource.items = [];
+			resource.userItems = [];
+			resource.allItems = [];
 			
 			var item = $resource ( 'v1/tag', {}, {
-				get : { method : 'GET', isArray : true }
+				get : { method : 'GET', isArray : false }
 			});
 
-			resource.getItems = function() {
+			resource.getUserItems = function() {
 				item.get().$promise.then( function( data ){
-					angular.copy( data, resource.items);
+					angular.copy( data.user, resource.userItems);
+				});
+			};
+
+			resource.getAllItems = function(query) {
+				item.get({tag:query}).$promise.then( function( data ){
+					angular.copy( data.todos, resource.allItems);
 				});
 			};
 
@@ -71,11 +78,13 @@ angular.module('usertags').controller(
 		'HashtagModel',
 		function($scope, $http, ItemResource,HashtagModel) {
 
-			$scope.tags = ItemResource.items;
-			ItemResource.getItems();
+			$scope.tags = ItemResource.userItems;
+			ItemResource.getUserItems();
 
+			
 	        $scope.loadTags = function(query) {
-	        return $http.get('v1/tag');
+	        ItemResource.getAllItems(query);
+	        return ItemResource.allItems;
 	        };
 
 	        $scope.envia = function(str_name){ 

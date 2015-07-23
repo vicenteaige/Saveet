@@ -18,16 +18,33 @@ class TagController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(Request $req)
     {
-        $hashtags = Hashtag::all();
         
+        $tag = strtolower($req->input( 'tag' ));
+
+        $hashtags = Hashtag::where('name','LIKE', "%$tag%")->get()->take(15);//Maximo 15 resultados
         $obj = array();
         foreach($hashtags as $hashtag){
             $obj[]=array('text'=>$hashtag->name);
         }
+        $resultAutocomplete['todos'] = $obj;
 
-        return response()->json($obj);
+
+        $user = Auth::user();
+        $user_hashtags = $user->hashtags;
+        $obj2 = array();
+        foreach($user_hashtags as $hashtag){
+            $obj2[]=array('text'=>$hashtag->name);
+        }
+        $resultUserHashtags['user'] = $obj2;
+
+
+        $resultFinal = array_merge($resultUserHashtags,$resultAutocomplete);
+
+        return response()
+            ->json($resultFinal)
+            ->header('Content-Type', 'application/json');
    }
 
     /**
@@ -35,9 +52,59 @@ class TagController extends Controller
      *
      * @return Response
      */
-    public function create()
+    public function create(Request $req)
     {
-        //
+        $tag = strtolower($req->input( 'tag' ));
+
+        Log::debug('tagcontroller destroy');
+
+        //Get Hashtag using text from input given
+        $hashtag = Hashtag::where('name', $tag)->firstOrFail();
+        //Get user from session
+        $user = Auth::user();
+
+       $relationExists = count(DB::select('select * from hashtag_user where hashtag_id = ? and user_id = ?', [$hashtag->id,$user->id]));
+       //Check relation does exist 
+       if (($relationExists)>0)
+        {
+            //If relation exists 
+            //Delete relation user-hashtag
+            $hashtag->users()->detach($user->id);
+       
+        } else{
+
+            //if it does not exist
+            //Macro format JSON response
+            return response()->api(400,'No', 'Hashtag already detached from User, hashtag_user non existent.', '');
+        }
+
+        //refresh
+        $hashtag = Hashtag::where('name', $id)->firstOrFail();
+        
+        //check if any user has it related to his account
+        if(($hashtag->users->count())>0){
+            
+            //Don't delete from table hashtags, at least one user has it
+             return response()->api(200,'yes', 'Success detaching hashtag from user.', '');
+
+        }else{
+
+            //No user has it
+
+            try {
+
+                //Delete hashtag from mysql db
+                $hashtag->delete();
+                return response()->api(200,'yes', 'Success deleting hashtag from db.', '');
+           
+            } catch (Exception $e) {
+
+                Log::error("Failed deleting hashtagh from hashtags");
+                Log::error($e->getMessage());
+                return response()->api(400,'no', 'Failed deleting hashtag from hashtags', '');
+
+            }
+        }
     }
 
     /**
@@ -54,38 +121,39 @@ class TagController extends Controller
         ]);
 
         if ($validator->fails()) {
-            //Already Exists
-            $hashtag = DB::table('hashtags')->where('name', 'tag')->first();
 
-            //Formato de Macro respuesta JSON
-            //return response()->api(400,'no', 'Error insert hashtag, repeated', '');
+            //Already Exists
+            
        
         }else{    
+
             $hashtag = new Hashtag();
-            //Hashtag en minúsculas
-            $hashtag->name = strtolower($tag);
-            //Añade Hashtag a la tabla hashtags mysql
+            $hashtag->name = $tag;
+            //Insert hashtag into mysql db
             $hashtag->save();
         }
-
-        //comprovar que la relación no exista ya
+        
+        //get user
         $user = Auth::user();
-        //Crea la relación hashtag-user
-        $hashtag->users()->attach($user->id); //this executes the insert-query  
+        //get hashtag
+        $hashtag = Hashtag::where('name', $tag)->first();
 
-
-        /*if (count($user->hashtags($hashtag->id))>0)
+        $relationExists = count(DB::select('select * from hashtag_user where hashtag_id = ? and user_id = ?', [$hashtag->id,$user->id]));
+        //Check relation does not exist already
+        if (($relationExists)>0)
         {
-          return response()->api(400,'no', 'Error insert hashtag_user, already exists', '');// exists
+            //If relation exists 
+            return response()->api(400,'no', 'Error before hashtag attachment, relation already exists', '');// exists
        
         } else{
+            //if it does not exist
 
-            //Crea la relación hashtag-user
+            //Create relation hashtag-user
             $hashtag->users()->attach($user->id); //this executes the insert-query
 
-            //Formato de Macro respuesta JSON
-            return response()->api(200,'yes', 'Success saving new hashtag', '');
-        }*/
+            //Macro format JSON response
+            return response()->api(200,'yes', 'Success attaching hashtag to user', '');
+        }
     }
 
     /**
@@ -129,20 +197,54 @@ class TagController extends Controller
      */
     public function destroy($id)
     {
-
         Log::debug('tagcontroller destroy');
-        //Eliminar tag de mysql
+
+        //Get Hashtag using text from input given
         $hashtag = Hashtag::where('name', $id)->firstOrFail();
-        
-        try {
-            //Eliminar tag de mysql
-            $hashtag->delete();
-            return response()->api(200,'yes', 'Success saving new hashtag', '');
-        } catch (Exception $e) {
-            Log::error("Failed deleting the user hashtagh from hashtags");
-            Log::error($e->getMessage());
-        
-            return response()->api(400,'no', 'Failed deleting hashtag', '');
+        //Get user from session
+        $user = Auth::user();
+
+       $relationExists = count(DB::select('select * from hashtag_user where hashtag_id = ? and user_id = ?', [$hashtag->id,$user->id]));
+       //Check relation does exist 
+       if (($relationExists)>0)
+        {
+            //If relation exists 
+            //Delete relation user-hashtag
+            $hashtag->users()->detach($user->id);
+       
+        } else{
+
+            //if it does not exist
+            //Macro format JSON response
+            return response()->api(400,'No', 'Hashtag already detached from User, hashtag_user non existent.', '');
+        }
+
+        //refresh
+        $hashtag = Hashtag::where('name', $id)->firstOrFail();
+
+        //check if any user has it related to his account
+        if(($hashtag->users->count())>0){
+            
+            //Don't delete from table hashtags, at least one user has it
+             return response()->api(200,'yes', 'Success detaching hashtag from user.', '');
+
+        }else{
+
+            //No user has it
+
+            try {
+
+                //Delete hashtag from mysql db
+                $hashtag->delete();
+                return response()->api(200,'yes', 'Success deleting hashtag from db.', '');
+           
+            } catch (Exception $e) {
+
+                Log::error("Failed deleting hashtagh from hashtags");
+                Log::error($e->getMessage());
+                return response()->api(400,'no', 'Failed deleting hashtag from hashtags', '');
+
+            }
         }
     }
 }

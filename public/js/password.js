@@ -8,6 +8,7 @@ angular.module('password').controller(
         'ResetModel',
         function($scope, ResetModel){
             $scope.password = function(sendEmail){
+                $scope.loading = true;
                 ResetModel.sendData(sendEmail);
                
             };
@@ -27,7 +28,7 @@ angular.module ('password').factory(
             });
 
             resource.sendData = function(sendEmail) {
-                item.sendData({email:sendEmail}).$promise.then( 
+                item.sendData({email:sendEmail}).$promise.then(
                     function( data ){
                         console.log(data);
                     },
