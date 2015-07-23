@@ -9,3 +9,4 @@ Homestead.yaml
 .DS_Store
 .AppleDouble
 .LSOverride
+.composer.lock
