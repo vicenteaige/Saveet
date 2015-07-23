@@ -51,7 +51,7 @@ class TwitterController extends Controller
      * If any change occurs this service will notify the daemon via
      * DeamonController passing a new array of trends to track.
      *
-     * @return Array of settings
+     * @return Array of trends
      */
     public function daemonServiceTrends()
     {
@@ -88,10 +88,10 @@ class TwitterController extends Controller
         }
 
         // Store new hashtags to database
-        $redis->set('daemon_hashtags', json_encode(array($trends));
+        $redis->set('daemon_hashtags', json_encode(array($trends)));
         $notify = new DaemonController();
         $notify->updateTrends($trends);
-        
+
         return response()
             ->json($trends)
             ->header('Content-Type', 'application/json');
