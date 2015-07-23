@@ -159,7 +159,7 @@ return [
         //
         // ES
         //
-        Shift31\LaravelElasticsearch\ElasticsearchServiceProvider::class,
+        //Shift31\LaravelElasticsearch\ElasticsearchServiceProvider::class,
 
     ],
 
