@@ -146,9 +146,6 @@ return [
         App\Providers\ResponseMacroServiceProvider::class,
 
 
-        Jenssegers\Mongodb\MongodbServiceProvider::class,
-
-
         //
         // Laravel IDE Helper
         //
@@ -157,7 +154,7 @@ return [
         //
         // MongoDB ORM plugin
         //
-        Jenssegers\Mongodb\MongodbServiceProvider::class,
+        //Jenssegers\Mongodb\MongodbServiceProvider::class,
 
     ],
 

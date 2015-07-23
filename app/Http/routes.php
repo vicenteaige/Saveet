@@ -10,10 +10,6 @@
 |
 */
 
-Route::get('tags', function () {
-     return view('tags');
- });
-
 //////////
 // Home //
 //////////
