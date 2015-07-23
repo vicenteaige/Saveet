@@ -34,7 +34,7 @@ class ElasticController extends Controller
                                 }
                             },
                             "aggs": {
-                                "prices": {
+                                "histogram_tweets": {
                                     "histogram": {
                                         "field": "tweet.created_at",
                                         "interval": 36000
@@ -53,7 +53,7 @@ class ElasticController extends Controller
 
         //$result = Es::search($searchParams);
         return response()
-            ->json($result)
+            ->json($result['aggregations']['tweets']['histogram_tweets']['buckets'])
             ->header('Content-Type', 'application/json');
 
 
