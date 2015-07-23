@@ -23,7 +23,7 @@ angular.module ('usertags').factory(
 			
 			resource.EliminarTag = function(tag_a_borrar){
 				
-				var item2 = $resource ( 'v1/tag/' + tag_a_borrar, {}, {
+				var item2 = $resource ( 'v1/tag/' + encodeURIComponent(tag_a_borrar), {}, {
 					//DELETE - destroy
 					EliminarTag : { method : 'DELETE', isArray : false }
 				});

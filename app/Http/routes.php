@@ -10,10 +10,6 @@
 |
 */
 
-Route::get('tags', function () {
-     return view('tags');
- });
-
 //////////
 // Home //
 //////////
@@ -99,6 +95,10 @@ Route::group(['prefix' => 'v1'], function () {
     Route::group(['prefix' => 'daemon'], function() {
         Route::get('/update', 'DaemonController@updateTrends');
         Route::get('/stop', 'DaemonController@stopDaemon');
+    });
+
+    Route::group(['prefix' => 'es'], function() {
+        Route::get('/test', 'ElasticController@testEs');
     });
 
 
