@@ -28,8 +28,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
         
         <script>var rootApp = angular.module('rootApp', ['logout','usertags'])</script>
-
-        <!-- Guarreria d3.js -->
+        
         <style>
 
             .plot {
@@ -102,6 +101,11 @@
                     <tags-input ng-model="tags" on-tag-added="envia ( $tag.text )" on-tag-removed="elimina ( $tag.text )" >
                         <auto-complete source="loadTags($query)"></auto-complete>
                     </tags-input>
+
+                    <div class="loading" ng-show="loading">
+                        <i class="fa fa-circle-o-notch fa-4x fa-spin"></i>
+                    </div>
+
             </div>
         </div>
     </div><!-- /.container -->
