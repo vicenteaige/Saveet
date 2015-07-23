@@ -17,7 +17,7 @@ angular.module('login').controller(
     ]
 );
 
-angular.module ('login').factory(
+angular.module('login').factory(
     'LoginModel',
     [
         '$resource',

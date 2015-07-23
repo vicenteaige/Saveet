@@ -7,8 +7,8 @@
     <script src="/bower_components/jquery/dist/jquery.js"></script>
     <script src="/bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css" type="text/css">
-    <link rel="stylesheet" href="bower_components/bootstrap-social/bootstrap-social.css" type="text/css">
-    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" type="text/css">
+    <link rel="stylesheet" href="/bower_components/bootstrap-social/bootstrap-social.css" type="text/css">
+    <link rel="stylesheet" href="/bower_components/font-awesome/css/font-awesome.css" type="text/css">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/index.css">
     <script src="/js/reset.js"></script>
@@ -48,6 +48,10 @@
         <button class="btn btn-lg btn-primary btn-block"  ng-click="reset(sendPassword, sendPasswordConfirmation)">Reset password</button>
         <div id="signup">
             <label><a href="{{Config::get('app.url')}}login">Do you have an account? Sign In</a></label>
+        </div>
+
+        <div class="loading" ng-show="loading">
+            <i class="fa fa-circle-o-notch fa-4x fa-spin"></i>
         </div>
 
 
