@@ -15,13 +15,14 @@ angular.module ('usertags').factory(
 				CrearTag : { method : 'POST', isArray : false }
 			});
 
-			resource.CrearTag = function(tag_nuevo){
+			resource.CrearTag = function($scope,tag_nuevo){
 				item.CrearTag({tag:tag_nuevo}).$promise.then( function( data ){
 					console.log(data);
+					$scope.loading = false;
 				});
 			};
 			
-			resource.EliminarTag = function(tag_a_borrar){
+			resource.EliminarTag = function($scope,tag_a_borrar){
 				
 				var item2 = $resource ( 'v1/tag/' + encodeURIComponent(tag_a_borrar), {}, {
 					//DELETE - destroy
@@ -30,6 +31,7 @@ angular.module ('usertags').factory(
 
 				item2.EliminarTag().$promise.then( function( data ){
 					console.log(data);
+					$scope.loading = false;
 				});
 			};
 
@@ -52,15 +54,17 @@ angular.module ('usertags').factory(
 				get : { method : 'GET', isArray : false }
 			});
 
-			resource.getUserItems = function() {
+			resource.getUserItems = function($scope) {
 				item.get().$promise.then( function( data ){
 					angular.copy( data.user, resource.userItems);
+					$scope.loading = false;
 				});
 			};
 
-			resource.getAllItems = function(query) {
+			resource.getAllItems = function($scope,query) {
 				item.get({tag:query}).$promise.then( function( data ){
 					angular.copy( data.todos, resource.allItems);
+					$scope.loading = false;
 				});
 			};
 
@@ -77,24 +81,26 @@ angular.module('usertags').controller(
 		'ItemResource',
 		'HashtagModel',
 		function($scope, $http, ItemResource,HashtagModel) {
-
-			$scope.tags = ItemResource.userItems;
-			ItemResource.getUserItems();
-
+			$scope.loading = true;
+			ItemResource.getUserItems($scope);
+			$scope.tags = ItemResource.userItems;	
 			
 	        $scope.loadTags = function(query) {
-	        ItemResource.getAllItems(query);
-	        return ItemResource.allItems;
+				$scope.loading = true;
+	        	ItemResource.getAllItems($scope,query);
+	       		return ItemResource.allItems;
 	        };
 
-	        $scope.envia = function(str_name){ 
-				HashtagModel.CrearTag(str_name);
+	        $scope.envia = function(str_name){
+	        	$scope.loading = true; 
+				HashtagModel.CrearTag($scope,str_name);
 			 };
 
-			$scope.elimina = function(str_name){ 
-				console.log('Sha creat elimina ' + str_name);
-				HashtagModel.EliminarTag(str_name);
+			$scope.elimina = function(str_name){
+				$scope.loading = true; 
+				HashtagModel.EliminarTag($scope,str_name);
 			};
+			
 	    }
     ]
 );
