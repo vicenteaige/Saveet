@@ -27,7 +27,7 @@ angular.module ('password').factory(
             });
 
             resource.sendData = function(sendEmail) {
-                item.sendData({email:sendEmail}).$promise.then( 
+                item.sendData({email:sendEmail}).$promise.then(
                     function( data ){
                         console.log(data);
                     },

@@ -4,10 +4,15 @@
     <title>Register</title>
     <script src="/bower_components/angular/angular.js"></script>
     <script src="/bower_components/angular-resource/angular-resource.js"></script>
+
     <script src="/bower_components/jquery/dist/jquery.js"></script>
-    <script src="/bower_components/bootstrap/js/bootstrap.js"></script>
-    <link rel="stylesheet" href="/bower_components/bootstrap/css/bootstrap.css" type="text/css">
+    <script src="/bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css" type="text/css">
+    <link rel="stylesheet" href="bower_components/bootstrap-social/bootstrap-social.css" type="text/css">
+    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" type="text/css">
+
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/index.css">
     <script src="/js/register.js"></script>
 </head>
 <body>
@@ -19,6 +24,20 @@
     <form class="form-signin" method="POST" action="/auth/register">
 
         <input type="hidden" ng-model="_token" value="<?php echo csrf_token(); ?>">
+
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#"><img alt="Brand" src="img/saveet.png"></a>
+                </div>
+            </div>
+        </nav>
 
         <h2 class="form-signin-heading">Please Sign Up</h2>
         <label for="inputName" class="sr-only">Name</label>
@@ -45,6 +64,17 @@
     </form>
 
 </div>
+
+<footer class="footer">
+    <div class="git-logo">
+        <p class="text-muted">Check this project on GitHub
+            <a class="btn btn-social-icon btn-github" href="https://github.com/jlightyear/bootcampinc" target="_blank">
+                <i class="fa fa-github"></i>
+            </a>
+        </p>
+    </div>
+
+</footer>
 
 </body>
 </html>

@@ -15,78 +15,22 @@
         <link rel="stylesheet" href="bower_components/ng-tags-input/ng-tags-input.min.css">  
 
         <script src="/bower_components/jquery/dist/jquery.js"></script>
-        <script src="/bower_components/bootstrap/js/bootstrap.js"></script>
-        <link rel="stylesheet" href="/bower_components/bootstrap/css/bootstrap.css" type="text/css">
-       
+        <script src="/bower_components/bootstrap/dist/js/bootstrap.js"></script>
+        <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css" type="text/css">
+        <link rel="stylesheet" href="bower_components/bootstrap-social/bootstrap-social.css" type="text/css">
+        <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" type="text/css">
+
         <script type="application/javascript" src="/js/logout.js"></script>
         <script type="application/javascript" src="/js/tag.js"></script>
         <link rel="stylesheet" href="/css/index.css">
+
+        <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
         
         <script>var rootApp = angular.module('rootApp', ['logout','usertags'])</script>
-
-      <!--  <style>
-            html, body {
-                height: 100%;
-            }
-            body {
-                margin: 0;
-                padding: 0;
-                width: 100%;
-                display: table;
-                font-weight: 100;
-                font-family: 'Lato';
-            }
-
-            .container {
-                text-align: center;
-                display: table-cell;
-                vertical-align: top;
-            }
-
-            .content {
-                text-align: center;
-                display: inline-block;
-            }
-
-            .title {
-                font-size: 96px;
-            }
-        </style>-->
         
     </head>
 
     <body ng-app="rootApp">
-
-
-
-    <!--<div class="container" ng-controller="LogoutController">
-        <div class="jumbotron">
-            @if (Auth::guest())
-                <h1>Welcome, you can see the statistics of the trending topics<br />
-                    and hashtags of interest.</h1>
-                <a href="/auth/login">Sign in</a><br />
-                <a href="/auth/register">Sign up</a><br />
-            @else
-                <h1>Welcome {{ Auth::user()->name }}, you can see the statistics of the trending topics<br />
-                and hashtags of interest.</h1>
-
-               <div class="content" ng-app="usertags"  ng-controller="HashtagController" >  
-
-                        <h1>This are your hashtags</h1>
-                        <tags-input ng-model="tags" on-tag-added="envia ( $tag.text )" on-tag-removed="elimina ( $tag.text )" >
-                            <auto-complete source="loadTags($query)"></auto-complete>
-                        </tags-input>
-                </div>
-
-                <div ng-app="logout"  ng-controller="LogoutController">
-                    <p><a href=""  ng-click="logout()">Log out</a></p>
-                </div>                    
-            @endif
-        </div>
-
-
-    </div>
-    </div>-->
 
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container" ng-app="logout" ng-controller="LogoutController">
@@ -101,9 +45,9 @@
             </div>
             <div id="navbar" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">Home</a></li>
-                    <li><a href="#about">Daily</a></li>
-                    <li><a href="#contact">Cities</a></li>
+                    <li class="active"><a href="#"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                    <li><a href="#world"><span class="glyphicon glyphicon-globe"></span> World trends</a></li>
+                    <li><a href="#location"><span class="glyphicon glyphicon-tags"></span> Location trends</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
@@ -126,13 +70,25 @@
         <div class="starter-template">
 
             <div class="content" ng-app="usertags" ng-controller="HashtagController" >
-                    <h1>Your hashtags:</h1>
+
+                    <h1>Your personal hashtags:</h1>
                     <tags-input ng-model="tags" on-tag-added="envia ( $tag.text )" on-tag-removed="elimina ( $tag.text )" >
                         <auto-complete source="loadTags($query)"></auto-complete>
                     </tags-input>
             </div>
         </div>
     </div><!-- /.container -->
+
+    <footer class="footer">
+        <div class="git-logo">
+            <p class="text-muted">Check this project on GitHub
+                <a class="btn btn-social-icon btn-github" href="https://github.com/jlightyear/bootcampinc" target="_blank">
+                    <i class="fa fa-github"></i>
+                </a>
+            </p>
+        </div>
+
+    </footer>
     </body>
 </html>
 
