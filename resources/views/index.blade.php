@@ -24,6 +24,8 @@
         <script type="application/javascript" src="/js/tag.js"></script>
         <link rel="stylesheet" href="/css/index.css">
         <link rel="stylesheet" href="/css/style.css">
+        <link rel="stylesheet" href="/bower_components/ng-tags-input/ng-tags-input.min.css">
+        <link rel="stylesheet" href="/bower_components/ng-tags-input/ng-tags-input.bootstrap.min.css">
 
         <!--<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
@@ -97,11 +99,12 @@
         <div class="starter-template">
 
             <div class="content" ng-app="usertags" ng-controller="HashtagController" >
-
-                    <h1>Your personal hashtags:</h1>
-                    <tags-input ng-model="tags" on-tag-added="envia ( $tag.text )" on-tag-removed="elimina ( $tag.text )" >
-                        <auto-complete source="loadTags($query)"></auto-complete>
-                    </tags-input>
+                    <div class="input-group">
+                        <span class="input-group-addon">Add tags to search:</span>
+                        <tags-input ng-model="tags" on-tag-added="envia ( $tag.text )" on-tag-removed="elimina ( $tag.text )" >
+                            <auto-complete source="loadTags($query)"></auto-complete>
+                        </tags-input>
+                    </div>
 
                     <div class="loading" ng-show="loading">
                         <i class="fa fa-circle-o-notch fa-4x fa-spin"></i>
@@ -127,7 +130,7 @@
                     var color = d3.scale.category10();
 
                     var xAxis = d3.svg.axis()
-                            .scale(x)
+                                .scale(x)
                             .orient("bottom");
 
                     var yAxis = d3.svg.axis()
