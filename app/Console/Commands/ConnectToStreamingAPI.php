@@ -48,7 +48,7 @@ class ConnectToStreamingAPI extends Command
 
         $this->twitterStream->consumerKey = $twitter_consumer_key;
         $this->twitterStream->consumerSecret = $twitter_consumer_secret;
-        $this->twitterStream->setTrack(array('#TagToSearch ')); // TODO change
+        $this->twitterStream->setTrack(array('#ColdplayBarcelona')); // TODO change
         $this->twitterStream->consume();
     }
 }
