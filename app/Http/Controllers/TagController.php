@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Prophecy\Exception\Exception;
 use Validator;
 use Illuminate\Http\Request;
 use App\Hashtag;
@@ -101,9 +102,20 @@ class TagController extends Controller
             //Create relation hashtag-user
             $hashtag->users()->attach($user->id); //this executes the insert-query
 
+            // Get all hashtags
+            // Start command
+            try{
+                $updateComandController = new TweetCommandController();
+                $updateComandController->update();
+
+            }catch (Exception $e){
+                return response()->api(500,'no', 'An error ocurred starting the stream', '');
+            }
+
             //Macro format JSON response
             return response()->api(200,'yes', 'Success attaching hashtag to user', '');
         }
+
     }
 
     /**

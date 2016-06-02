@@ -12,7 +12,7 @@ class ConnectToStreamingAPI extends Command
      *
      * @var string
      */
-    protected $signature = 'connect_to_streaming_api';
+    protected $signature = 'connect_to_streaming_api {name}';
 
     /**
      * The console command description.
@@ -29,7 +29,7 @@ class ConnectToStreamingAPI extends Command
      *
      * @param TwitterStream $twitterStream
      */
-    public function __construct(TwitterStream $twitterStream)
+    public function __construct( TwitterStream $twitterStream)
     {
         $this->twitterStream = $twitterStream;
         parent::__construct();
@@ -42,13 +42,18 @@ class ConnectToStreamingAPI extends Command
      */
     public function handle()
     {
+
+        $hashtags = $this->argument();
+
         // Load twitter keys from environment
         $twitter_consumer_key = env('TWITTER_CONSUMER_KEY', '');
         $twitter_consumer_secret = env('TWITTER_CONSUMER_SECRET', '');
 
         $this->twitterStream->consumerKey = $twitter_consumer_key;
         $this->twitterStream->consumerSecret = $twitter_consumer_secret;
-        $this->twitterStream->setTrack(array('#ColdplayBarcelona')); // TODO change
+        $this->twitterStream->setTrack($hashtags['name']); // Hashtags to search
         $this->twitterStream->consume();
+
+        return;
     }
 }
