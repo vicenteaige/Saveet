@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use DB;
 use Illuminate\Console\Command;
 use App\TwitterStream;
 
@@ -12,7 +13,7 @@ class ConnectToStreamingAPI extends Command
      *
      * @var string
      */
-    protected $signature = 'connect_to_streaming_api {name}';
+    protected $signature = 'connect_to_streaming_api';
 
     /**
      * The console command description.
@@ -42,8 +43,8 @@ class ConnectToStreamingAPI extends Command
      */
     public function handle()
     {
-
-        $hashtags = $this->argument();
+        $hashtags['name'] = DB::table('hashtags')->lists('name');
+        //$hashtags = $this->argument();
 
         // Load twitter keys from environment
         $twitter_consumer_key = env('TWITTER_CONSUMER_KEY', '');

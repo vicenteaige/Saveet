@@ -77,13 +77,22 @@ Route::group(['prefix' => 'v1'], function () {
         Route::resource('register', 'UserController');
 
     });
-    ////////////////////////////////////////////////////////////////
-    // Hashtags related calls (requires an authentificated user)  //
-    ////////////////////////////////////////////////////////////////
+
+    ///////////////
+    // Hashtags  //
+    ///////////////
     Route::resource('tag','TagController');
     Route::delete('tag/{id}','TagController@destroy');
 
 
+    ////////////
+    // Graph  //
+    ////////////
+    Route::group(['prefix' => 'graph'], function(){
+       Route::get('', 'GraphController@apiGetGraph');
+    });
+
+    /*
     Route::group(['prefix' => 'twitter'], function() {
         Route::get('/trends', 'TwitterController@getTrends');
         Route::get('/daemon', 'TwitterController@daemonServiceTrends');
@@ -97,7 +106,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::group(['prefix' => 'es'], function() {
         Route::get('/test', 'ElasticController@testEs');
     });
-
+    */
 
 });
 

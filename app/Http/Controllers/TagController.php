@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+use Artisan;
+use Illuminate\Support\Facades\Queue;
 use Prophecy\Exception\Exception;
 use Validator;
 use Illuminate\Http\Request;
@@ -102,11 +104,8 @@ class TagController extends Controller
             //Create relation hashtag-user
             $hashtag->users()->attach($user->id); //this executes the insert-query
 
-            // Get all hashtags
-            // Start command
             try{
-                $updateComandController = new TweetCommandController();
-                $updateComandController->update();
+                Artisan::call('connect_to_streaming_api');
 
             }catch (Exception $e){
                 return response()->api(500,'no', 'An error ocurred starting the stream', '');
@@ -198,8 +197,16 @@ class TagController extends Controller
 
                 //Delete hashtag from mysql db
                 $hashtag->delete();
+
+                try{
+                    Artisan::call('connect_to_streaming_api');
+
+                }catch (Exception $e){
+                    return response()->api(500,'no', 'An error ocurred starting the stream', '');
+                }
+
                 return response()->api(200,'yes', 'Success deleting hashtag from db.', '');
-           
+
             } catch (Exception $e) {
 
                 Log::error("Failed deleting hashtagh from hashtags");

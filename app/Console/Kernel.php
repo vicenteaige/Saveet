@@ -14,7 +14,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        Commands\ConnectToStreamingAPI::class
+        Commands\ConnectToStreamingAPI::class,
+        Commands\TweetsSummary::class
     ];
 
     /**
@@ -25,11 +26,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        /*
-        $schedule->call(function () {
-            $twitterController = new TwitterController();
-            $twitterController.daemonServiceTrends();
-        })->everyFiveMinutes();;
-        */
+        // Tweets summary
+        $schedule
+            ->command('tweets_summary')
+            ->dailyAt('00:00')
+            ->withoutOverlapping();
     }
 }
