@@ -9,6 +9,7 @@
 
         <script src="/bower_components/angular/angular.js"></script>
         <script src="/bower_components/angular-resource/angular-resource.js"></script>
+        <script src="http://code.angularjs.org/1.2.6/angular-animate.js"></script>
 
         <!--ngTags-input - obligatoriamente tras angular-->
         <script type="application/javascript" src="bower_components/ng-tags-input/ng-tags-input.js"></script>
@@ -22,6 +23,8 @@
 
         <script type="application/javascript" src="/js/logout.js"></script>
         <script type="application/javascript" src="/js/tag.js"></script>
+        <script type="application/javascript" src="/js/tweets.js"></script>
+        <script type="application/javascript" src="/js/graphic.js"></script>
         <link rel="stylesheet" href="/css/index.css">
         <link rel="stylesheet" href="/css/style.css">
         <link rel="stylesheet" href="/bower_components/ng-tags-input/ng-tags-input.min.css">
@@ -29,8 +32,17 @@
 
         <!--<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
-        
-        <script>var rootApp = angular.module('rootApp', ['logout','usertags'])</script>
+
+        <!-- Load c3.css -->
+        <link href="/bower_components/c3/c3.css" rel="stylesheet" type="text/css">
+
+        <!-- Load d3.js and c3.js -->
+        <script src="/bower_components/c3/c3.min.js"></script>
+        <script src="http://requirejs.org/docs/release/2.2.0/comments/require.js"></script>
+
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+        <script>var rootApp = angular.module('rootApp', ['logout','usertags', 'graph', 'tweet'])</script>
 
         <style>
 
@@ -112,14 +124,17 @@
 
             </div>
         </div>
-        <div class="graphic">
+
+        <div class="graphic" ng-app="graph" ng-controller="GraphController" data-ng-init="graph()">
             <div class="plot" style="text-align: center">
+
                 <script>
                     var margin = {top: 20, right: 80, bottom: 30, left: 50},
-                            width = 960 - margin.left - margin.right,
-                            height = 500 - margin.top - margin.bottom;
+                            width = 550 - margin.left - margin.right,
+                            height = 450 - margin.top - margin.bottom;
 
                     var parseDate = d3.time.format("%Y%m%d").parse;
+                    //var parseDate = d3.time.format("%Y%m%d").parse;
 
                     var x = d3.time.scale()
                             .range([0, width]);
@@ -148,9 +163,10 @@
                             .append("g")
                             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-                    d3.json("/test/json", function(error, data) {
+                    d3.json("/json/tweetsGraph.json", function(error, data) {
                         if (error) throw error;
                         color.domain(d3.keys(data[0]).filter(function(key) { return key !== "date"; }));
+
                         data.forEach(function(d) {
                             d.date = parseDate(String(d.date));
                         });
@@ -224,13 +240,32 @@
             </div>
         </div>
 
+        <div class="latest-tweets">
+            <h1>Latest tweets</h1>
+            <div class="tweets" ng-app="tweet" ng-controller="TweetController" data-ng-init="tweet()">
+                <div class="tweet" ng-repeat="tweet in tweets">
+                    <div class="tweet-image">
+                        <img src="@{{tweet.user_avatar_url}}">
+                    </div>
+                    <div class="tweet-text">
+                        <div class="tweet-info">
+                            <strong>@{{tweet.name}}</strong> @@{{tweet.user_screen_name}}
+                        </div>
+                        <div class="tweet-content">
+                            @{{tweet.tweet_text}}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
     </div><!-- /.container -->
 
 
     <footer class="footer">
         <div class="git-logo">
             <p class="text-muted">Check this project on GitHub
-                <a class="btn btn-social-icon btn-github" href="https://github.com/jlightyear/bootcampinc" target="_blank">
+                <a class="btn btn-social-icon btn-github" href="https://github.com/vicenteaige/saveet" target="_blank">
                     <i class="fa fa-github"></i>
                 </a>
             </p>

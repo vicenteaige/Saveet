@@ -62,3 +62,62 @@ body {
     margin-top: 10px;
     text-align: center;
 }
+
+.graphic{
+    float: left;
+}
+
+.tweets{
+    float: right;
+    border: 1px solid #CECECE;
+    width: 50%;
+    background: #FFFFFF;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+.tweet{
+    border-bottom: 1px solid #CECECE;
+    margin-top: 5px;
+    min-height: 70px;
+}
+
+.tweet-image{
+    float: left;
+    margin: 8px;
+}
+
+.tweet-image img{
+    border-radius: 50%;
+}
+
+.tweet-text{
+
+}
+
+.tweet-info{
+
+}
+
+/* angular list animations */
+.ng-enter{
+    -webkit-transition: 0.75s;
+    -moz-transition: 0.75s;
+    -ms-transition: 0.75s;
+    -o-transition: 0.75s;
+    transition: 0.75s;
+
+    opacity: 0;
+}
+
+.ng-enter-active{
+    opacity: 1;
+}
+
+.ng-leave{
+
+}
+
+.ng-leave-active{
+
+}
